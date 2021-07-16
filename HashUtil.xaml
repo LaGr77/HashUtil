@@ -1,0 +1,61 @@
+﻿<Window x:Class="HashUtil.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HashUtil"
+        mc:Ignorable="d"
+        Title="Kontrolní součet" Height="514.361" Width="868.356" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="0,0,4,0">
+        <GroupBox x:Name="gbOperation" Header="Operace" HorizontalAlignment="Left" Height="140" Margin="11,10,0,0" VerticalAlignment="Top" Width="191">
+            <Grid HorizontalAlignment="Left" Height="115" Margin="10,0,-2,0" VerticalAlignment="Top" Width="171">
+                <RadioButton x:Name="rbCreateHash" Content="Vytvoření HASHe" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" GroupName="rbgOperation" IsChecked="True"/>
+                <RadioButton x:Name="rbHashControl"  Content="Kontrola HASHe" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" GroupName="rbgOperation" />
+                <RadioButton x:Name="rbControlFromFile" Content="Kontrola ze souboru" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" GroupName="rbgOperation"/>
+                <RadioButton x:Name="rbCreateHashSum" Content="Vytvoření souboru (1)" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" GroupName="rbgOperation"/>
+                <RadioButton x:Name="rbCreateHashSumMore" Content="Vytvoření souboru (1+)" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" GroupName="rbgOperation"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="gbAlgorithm"  Header="Algoritmus" HorizontalAlignment="Left" Height="218" Margin="11,155,0,0" VerticalAlignment="Top" Width="191">
+            <Grid HorizontalAlignment="Left" Height="192" VerticalAlignment="Top" Width="171" Margin="10,0,-2,0">
+                <CheckBox x:Name="cbMd5" Content="MD5 (default)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                <CheckBox x:Name="cbSha1" Content="SHA1" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="cbSha256" Content="SHA256" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="cbSha384" Content="SHA384" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="cbSha512" Content="SHA512" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="cbRipemd160" Content="RIPEMD160" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="cbMactripledes" Content="MACTripleDES" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                <Button x:Name="btnAll" Content="Vše" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
+                <Button x:Name="btnNothing" Content="Nic" HorizontalAlignment="Left" Margin="90,150,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
+            </Grid>
+        </GroupBox>
+        <Label x:Name="lbHash" Content="HASH" HorizontalAlignment="Left" Margin="207,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.606,0.033" IsEnabled="False"/>
+        <TextBox x:Name="tbHash"  HorizontalAlignment="Left" Height="23" Margin="258,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="588" IsEnabled="False" Background="DarkGray"/>
+        <Label x:Name="lbIn"  Content="Vstup" HorizontalAlignment="Left" Margin="207,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.24,0.448"/>
+        <TextBox x:Name="tbIn"  HorizontalAlignment="Left" Height="23" Margin="258,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="546" Background="LightGreen"/>
+        <Button x:Name="btnIn" Content="..." HorizontalAlignment="Left" Margin="809,41,0,0" VerticalAlignment="Top" Width="37" Height="23" Background="LightGreen"/>
+        <CheckBox x:Name="cbOut" Content="Stejný výstup" HorizontalAlignment="Left" Margin="207,72,0,0" VerticalAlignment="Top" IsEnabled="False" Background="DarkGray"/>
+        <Label x:Name="lbOut" Content="Výstup" HorizontalAlignment="Left" Margin="207,92,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.579,-1.253" IsEnabled="False"/>
+        <TextBox x:Name="tbOut" HorizontalAlignment="Left" Height="23" Margin="258,95,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="546" IsEnabled="False" Background="DarkGray"/>
+        <Button x:Name="btnOut" Content="..." HorizontalAlignment="Left" Margin="809,95,0,0" VerticalAlignment="Top" Width="37" Height="23" IsEnabled="False" Background="DarkGray"/>
+        <DataGrid x:Name="dgData" HorizontalAlignment="Left" Height="321" Margin="207,123,0,0" VerticalAlignment="Top" Width="639" SelectionMode="Single" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Název" Width="90" MaxWidth="90" MinWidth="90"/>
+                <DataGridTextColumn Binding="{Binding Data}" Header="Data"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="btnGo" Content="Proveď" HorizontalAlignment="Left" Margin="453,449,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+        <Button x:Name="btnRefresh" Content="Obnov" HorizontalAlignment="Left" Margin="533,449,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+        <Button x:Name="btnClear" Content="Vyčisti" HorizontalAlignment="Left" Margin="613,449,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+        <Button x:Name="btnExport" Content="Export" HorizontalAlignment="Left" Margin="693,449,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+        <Button x:Name="btnExit" Content="Konec" HorizontalAlignment="Left" Margin="773,449,0,0" VerticalAlignment="Top" Width="75" Height="23"/>   
+        <GroupBox x:Name="gbLanguage" Header="Jazyk" HorizontalAlignment="Left" Height="93" Margin="11,378,0,0" VerticalAlignment="Top" Width="191">
+            <Grid HorizontalAlignment="Left" Height="77" Margin="10,0,-2,0" VerticalAlignment="Top" Width="171">
+                <RadioButton x:Name="rbCzech" Content="Čeština" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" GroupName="rbgLanguage" IsChecked="True"/>
+                <RadioButton x:Name="rbEnglish" Content="English" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" GroupName="rbgLanguage"/>
+                <RadioButton x:Name="rbRussian" Content="Russian" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" GroupName="rbgLanguage"/>
+            </Grid>
+        </GroupBox>
+        <Label x:Name="lbInfo" Content="Waiting ..." HorizontalAlignment="Left" Margin="207,449,0,0" VerticalAlignment="Top" Height="26" Width="241"/>
+    </Grid>
+</Window>
