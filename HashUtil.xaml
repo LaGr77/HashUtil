@@ -29,11 +29,11 @@
                 <Button x:Name="btnNothing" Content="Nic" HorizontalAlignment="Left" Margin="90,150,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
             </Grid>
         </GroupBox>
-        <Label x:Name="lbHash" Content="HASH" HorizontalAlignment="Left" Margin="207,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.606,0.033" IsEnabled="False"/>
-        <TextBox x:Name="tbHash"  HorizontalAlignment="Left" Height="23" Margin="258,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="588" IsEnabled="False" Background="DarkGray"/>
-        <Label x:Name="lbIn"  Content="Vstup" HorizontalAlignment="Left" Margin="207,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.24,0.448"/>
-        <TextBox x:Name="tbIn"  HorizontalAlignment="Left" Height="23" Margin="258,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="546" Background="LightGreen"/>
-        <Button x:Name="btnIn" Content="..." HorizontalAlignment="Left" Margin="809,41,0,0" VerticalAlignment="Top" Width="37" Height="23" Background="LightGreen"/>
+        <Label x:Name="lbIn"  Content="Vstup" HorizontalAlignment="Left" Margin="207,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.24,0.448"/>
+        <TextBox x:Name="tbIn"  HorizontalAlignment="Left" Height="23" Margin="258,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="546" Background="LightGreen"/>
+        <Button x:Name="btnIn" Content="..." HorizontalAlignment="Left" Margin="809,13,0,0" VerticalAlignment="Top" Width="37" Height="23" Background="LightGreen"/>
+        <Label x:Name="lbHash" Content="HASH" HorizontalAlignment="Left" Margin="207,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.606,0.033" IsEnabled="False"/>
+        <TextBox x:Name="tbHash"  HorizontalAlignment="Left" Height="23" Margin="258,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="588" IsEnabled="False" Background="DarkGray"/>
         <CheckBox x:Name="cbOut" Content="Stejný výstup" HorizontalAlignment="Left" Margin="207,72,0,0" VerticalAlignment="Top" IsEnabled="False" Background="DarkGray"/>
         <Label x:Name="lbOut" Content="Výstup" HorizontalAlignment="Left" Margin="207,92,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.579,-1.253" IsEnabled="False"/>
         <TextBox x:Name="tbOut" HorizontalAlignment="Left" Height="23" Margin="258,95,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="546" IsEnabled="False" Background="DarkGray"/>
