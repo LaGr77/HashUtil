@@ -290,6 +290,7 @@ $SyncHash.GuiElements.Count;
 
 ## NO tread
 $SyncHash.GuiElements.rbCreateHash.add_click({
+    ## Enable Components
     $SyncHash.GuiElements.lbIn.IsEnabled = $true;
     $SyncHash.GuiElements.tbIn.IsEnabled = $true;
     $SyncHash.GuiElements.btnIn.IsEnabled = $true;
@@ -297,12 +298,22 @@ $SyncHash.GuiElements.rbCreateHash.add_click({
     $SyncHash.GuiElements.lbHash.IsEnabled = $false;
     $SyncHash.GuiElements.tbHash.IsEnabled = $false;
 
-<#    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.btnIn.Background = "LightGreen";
+    $SyncHash.GuiElements.cbOut.IsEnabled = $false;
 
+    $SyncHash.GuiElements.lbOut.IsEnabled = $false;
+    $SyncHash.GuiElements.tbOut.IsEnabled = $false;
+    $SyncHash.GuiElements.btnOut.IsEnabled = $false;
+
+    ## Colored Components
+    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
+    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
+
+    $SyncHash.GuiElements.tbHash.Background = "DarkGray";
+
+    ## Other
+    $SyncHash.GuiElements.cbOut.IsChecked = $false;
+
+    <#    
     if (!([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
         if (Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Any) {
             if (((Get-Item $SyncHash.GuiElements.tbIn.Text.Trim()) -is [System.IO.DirectoryInfo])) {
@@ -310,15 +321,6 @@ $SyncHash.GuiElements.rbCreateHash.add_click({
             }           
         }
     }
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $false;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-    #$SyncHash.GuiElements.tbHash.Background = "DarkGray";
-    $SyncHash.GuiElements.tbHash = "";
-
-    $SyncHash.GuiElements.cbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.cbOut.IsChecked = $false;
-    #$SyncHash.GuiElements.cbOut.Background = "DarkGray";
 
     $SyncHash.GuiElements.lbOut.IsEnabled = $false;
     $SyncHash.GuiElements.tbOut.IsEnabled = $false;
@@ -328,6 +330,7 @@ $SyncHash.GuiElements.rbCreateHash.add_click({
     #$SyncHash.GuiElements.btnOut.Background = "DarkGray";#>
 })
 $SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
+    ## Enable Component
     $SyncHash.GuiElements.lbIn.IsEnabled = $true;
     $SyncHash.GuiElements.tbIn.IsEnabled = $true;
     $SyncHash.GuiElements.btnIn.IsEnabled = $true;
@@ -335,19 +338,22 @@ $SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
     $SyncHash.GuiElements.lbHash.IsEnabled = $true;
     $SyncHash.GuiElements.tbHash.IsEnabled = $true;
 
-    <#   $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $true;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbHash.Background = "LightGreen";
-
     $SyncHash.GuiElements.cbOut.IsEnabled = $false;
+
+    $SyncHash.GuiElements.lbOut.IsEnabled = $false;
+    $SyncHash.GuiElements.tbOut.IsEnabled = $false;
+    $SyncHash.GuiElements.btnOut.IsEnabled = $false;
+
+    ## Colored Components
+    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
+    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
+
+    $SyncHash.GuiElements.tbHash.Background = "LightGreen";
+
+    ## Other
     $SyncHash.GuiElements.cbOut.IsChecked = $false;
-    #$SyncHash.GuiElements.cbOut.Background = "DarkGray";
+
+    <#   
 
     $SyncHash.GuiElements.lbOut.IsEnabled = $false;
     $SyncHash.GuiElements.tbOut.IsEnabled = $false;
@@ -356,6 +362,7 @@ $SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
     #$SyncHash.GuiElements.btnOut.Background = "DarkGray";#>
 })
 $SyncHash.GuiElements.rbControlFromFile.add_click({
+    ## Enable Component
     $SyncHash.GuiElements.lbIn.IsEnabled = $true;
     $SyncHash.GuiElements.tbIn.IsEnabled = $true;
     $SyncHash.GuiElements.btnIn.IsEnabled = $true;
@@ -363,22 +370,22 @@ $SyncHash.GuiElements.rbControlFromFile.add_click({
     $SyncHash.GuiElements.lbHash.IsEnabled = $false;
     $SyncHash.GuiElements.tbHash.IsEnabled = $false;
 
-    <#$SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.tbIn.Text = "";
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $false;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-    #$SyncHash.GuiElements.tbHash.Background = "DarkGray";
-    $SyncHash.GuiElements.tbHash = "";
-
     $SyncHash.GuiElements.cbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.cbOut.IsChecked = $false;
-    #$SyncHash.GuiElements.cbOut.Background = "DarkGray";
 
+    $SyncHash.GuiElements.lbOut.IsEnabled = $false;
+    $SyncHash.GuiElements.tbOut.IsEnabled = $false;
+    $SyncHash.GuiElements.btnOut.IsEnabled = $false;
+
+    ## Colored Components
+    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
+    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
+
+    $SyncHash.GuiElements.tbHash.Background = "DarkGray";
+
+    ## Other
+    $SyncHash.GuiElements.cbOut.IsChecked = $false;
+
+    <#
     $SyncHash.GuiElements.lbOut.IsEnabled = $false;
     $SyncHash.GuiElements.tbOut.IsEnabled = $false;
     #$SyncHash.GuiElements.tbOut.Background = "DarkGray";
@@ -387,26 +394,36 @@ $SyncHash.GuiElements.rbControlFromFile.add_click({
     #$SyncHash.GuiElements.btnOut.Background = "DarkGray";#>
 })
 $SyncHash.GuiElements.rbCreateHashSum.add_click({
+    ## Enable Component
     $SyncHash.GuiElements.lbIn.IsEnabled = $true;
     $SyncHash.GuiElements.tbIn.IsEnabled = $true;
     $SyncHash.GuiElements.btnIn.IsEnabled = $true;
 
     $SyncHash.GuiElements.lbHash.IsEnabled = $false;
     $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-
-<#    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $true;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbHash.Background = "LightGreen";
-
+    
     $SyncHash.GuiElements.cbOut.IsEnabled = $true;
-    #$SyncHash.GuiElements.cbOut.Background = "LightGreen";
+    
+    $SyncHash.GuiElements.lbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true    { $false }
+        $false   { $true }
+    }
+    $SyncHash.GuiElements.tbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true    { $false }
+        $false   { $true }
+    }
+    $SyncHash.GuiElements.btnOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true    { $false }
+        $false   { $true }
+    }
 
+    ## Colored Components
+    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
+    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
+
+    $SyncHash.GuiElements.tbHash.Background = "DarkGray";
+
+<#    
     if ($SyncHash.GuiElements.cbOut.IsEnabled -and $SyncHash.GuiElements.cbOut.IsChecked) {
         $SyncHash.GuiElements.lbOut.IsEnabled = $false;
         $SyncHash.GuiElements.tbOut.IsEnabled = $false;
@@ -422,6 +439,7 @@ $SyncHash.GuiElements.rbCreateHashSum.add_click({
     }#>
 })
 $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 folder
+    ## Enable Component
     $SyncHash.GuiElements.lbIn.IsEnabled = $true;
     $SyncHash.GuiElements.tbIn.IsEnabled = $true;
     $SyncHash.GuiElements.btnIn.IsEnabled = $true;
@@ -429,18 +447,28 @@ $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 fold
     $SyncHash.GuiElements.lbHash.IsEnabled = $false;
     $SyncHash.GuiElements.tbHash.IsEnabled = $false;
 
-<#    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-    #$SyncHash.GuiElements.btnIn.Background = "LightGreen";
+    $SyncHash.GuiElements.cbOut.IsEnabled = $true; 
 
-    $SyncHash.GuiElements.lbHash.IsEnabled = $true;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $true;
-    #$SyncHash.GuiElements.tbHash.Background = "LightGreen";
+    $SyncHash.GuiElements.lbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true    { $false }
+        $false   { $true }
+    }
+    $SyncHash.GuiElements.tbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true    { $false }
+        $false   { $true }
+    }
+    $SyncHash.GuiElements.btnOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true    { $false }
+        $false   { $true }
+    }
 
-    $SyncHash.GuiElements.cbOut.IsEnabled = $true;
-    #$SyncHash.GuiElements.cbOut.Background = "LightGreen";
+    ## Colored Components
+    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
+    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
+
+    $SyncHash.GuiElements.tbHash.Background = "DarkGray";    
+
+<#    
 
     if ($SyncHash.GuiElements.cbOut.IsEnabled -and $SyncHash.GuiElements.cbOut.IsChecked) {
         $SyncHash.GuiElements.lbOut.IsEnabled = $false;
