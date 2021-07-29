@@ -261,7 +261,6 @@ function ReturnAlgoritm {
     #>
 }
 
-
 ## Gui
 ##Set-Location -Path $PSScriptRoot;
 Add-Type -AssemblyName 'PresentationCore', 'PresentationFramework';
@@ -285,9 +284,6 @@ foreach ($N in $WpfFile.SelectNodes('//*[@x:Name]', $WpfNs)) {
     $SyncHash.GuiElements.Add($N.Name, $SyncHash.Window.FindName($N.Name));  
 }
 
-## Remove
-$SyncHash.GuiElements.Count;
-
 ## NO tread
 $SyncHash.GuiElements.rbCreateHash.add_click({
     ## Enable Components
@@ -310,8 +306,14 @@ $SyncHash.GuiElements.rbCreateHash.add_click({
 
     $SyncHash.GuiElements.tbHash.Background = "DarkGray";
 
+    $SyncHash.GuiElements.tbOut.Background = "DarkGray";
+    $SyncHash.GuiElements.btnOut.Background = "DarkGray";
+
     ## Other
     $SyncHash.GuiElements.cbOut.IsChecked = $false;
+
+    $SyncHash.GuiElements.tbOut.Text = "";
+    $SyncHash.GuiElements.tbHash.Text = "";
 
     <#    
     if (!([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
@@ -322,9 +324,7 @@ $SyncHash.GuiElements.rbCreateHash.add_click({
         }
     }
 
-    #$SyncHash.GuiElements.tbOut.Background = "DarkGray";
-    $SyncHash.GuiElements.tbOut.Text = "";
-    #$SyncHash.GuiElements.btnOut.Background = "DarkGray";#>
+#>
 })
 $SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
     ## Enable Component
@@ -352,6 +352,8 @@ $SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
 
     ## Other
     $SyncHash.GuiElements.cbOut.IsChecked = $false;
+
+    $SyncHash.GuiElements.tbOut.Text = "";
 
 })
 $SyncHash.GuiElements.rbControlFromFile.add_click({
@@ -381,9 +383,9 @@ $SyncHash.GuiElements.rbControlFromFile.add_click({
     ## Other
     $SyncHash.GuiElements.cbOut.IsChecked = $false;
 
-    <#
     $SyncHash.GuiElements.tbOut.Text = "";
-#>
+    $SyncHash.GuiElements.tbHash.Text = "";
+
 })
 $SyncHash.GuiElements.rbCreateHashSum.add_click({
     ## Enable Component
@@ -466,29 +468,39 @@ $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 fold
 })
 $SyncHash.GuiElements.btnIn.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
 $SyncHash.GuiElements.cbOut.add_click({
-    if ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $SyncHash.GuiElements.lbOut.IsEnabled = $false;
-        $SyncHash.GuiElements.tbOut.IsEnabled = $false;
-        #$SyncHash.GuiElements.tbOut.Background = "DarkGray";
-        $SyncHash.GuiElements.btnOut.IsEnabled = $false;
-        #$SyncHash.GuiElements.btnOut.Background = "DarkGray";
-        if ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked) {
-            $SyncHash.GuiElements.tbOut.Text = $SyncHash.GuiElements.tbIn.Text.Trim();
-        }
-        if ($SyncHash.GuiElements.rbCreateHashSum.IsChecked) {
-            if (!([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
-                if (Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Any) {
-                    $SyncHash.GuiElements.tbOut.Text = (Get-ChildItem $SyncHash.GuiElements.tbIn.Text.Trim()).Directory;
+    switch ($SyncHash.GuiElements.cbOut.IsChecked) {
+        $true  {
+            ## Enable Component
+            $SyncHash.GuiElements.lbOut.IsEnabled = $false;
+            $SyncHash.GuiElements.tbOut.IsEnabled = $false;
+            $SyncHash.GuiElements.btnOut.IsEnabled = $false;
+
+            ## Colored Components
+            $SyncHash.GuiElements.tbOut.Background = "DarkGray";
+            $SyncHash.GuiElements.btnOut.Background = "DarkGray";
+
+            ## Other
+            if ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked) {
+                $SyncHash.GuiElements.tbOut.Text = $SyncHash.GuiElements.tbIn.Text.Trim();
+            }
+            if ($SyncHash.GuiElements.rbCreateHashSum.IsChecked) {
+                if (!([String]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
+                    if (Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim()) {
+                        $SyncHash.GuiElements.tbOut.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory; ## TODO test
+                    }
                 }
             }
         }
-    } else {
-        $SyncHash.GuiElements.lbOut.IsEnabled = $true;
-        $SyncHash.GuiElements.tbOut.IsEnabled = $true;
-        #$SyncHash.GuiElements.tbOut.Background = "LightGreen";
-        $SyncHash.GuiElements.btnOut.IsEnabled = $true;
-        #$SyncHash.GuiElements.btnOut.Background = "LightGreen";
-        $SyncHash.GuiElements.tbOut.Text = "";
+        $false {
+            ## Enable Component
+            $SyncHash.GuiElements.lbOut.IsEnabled = $true;
+            $SyncHash.GuiElements.tbOut.IsEnabled = $true;
+            $SyncHash.GuiElements.btnOut.IsEnabled = $true;
+
+            ## Colored Components
+            $SyncHash.GuiElements.tbOut.Background = "LightGreen";
+            $SyncHash.GuiElements.btnOut.Background = "LightGreen";
+        }
     }
 })
 $SyncHash.GuiElements.btnOut.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
@@ -513,13 +525,10 @@ $SyncHash.GuiElements.btnGo.add_click({
     if ($SyncHash.GuiElements.rbControlFromFile.IsChecked) {
         $canGo = $false;
     }
+
     ##GO
     if ($canGo) {Write-Host "DRY RUN";}
     else {Write-Host "CAN'T GO";}
-
-
-
-    
 
 })
 $SyncHash.GuiElements.btnRefresh.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
@@ -539,41 +548,3 @@ $SyncHash.GuiElements.rbRussian.add_click({Message -title ("Upozorn$([char]0x011
 ## Runaspace
 
 $SyncHash.Window.ShowDialog() | Out-Null;
-
-# SIG # Begin signature block
-# MIIGiwYJKoZIhvcNAQcCoIIGfDCCBngCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
-# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUoOJ7xqnFlzlCV+D5fIJvgx8Y
-# 7RugggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
-# AQUFADBwMRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxGDAWBgoJkiaJk/IsZAEZFghk
-# ZHBvcnViYTEXMBUGA1UEAwwOZGRwb3J1YmEubG9jYWwxJDAiBgkqhkiG9w0BCQEW
-# FWxncnVsaWNoQGRzcG9ydWJhLmNvbTAeFw0yMDA2MTcwODEwMzNaFw0zMDA2MTcw
-# ODIwMzNaMHAxFTATBgoJkiaJk/IsZAEZFgVsb2NhbDEYMBYGCgmSJomT8ixkARkW
-# CGRkcG9ydWJhMRcwFQYDVQQDDA5kZHBvcnViYS5sb2NhbDEkMCIGCSqGSIb3DQEJ
-# ARYVbGdydWxpY2hAZHNwb3J1YmEuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
-# MIIBCgKCAQEAwBDuWaGtQ+DLvep5GfZueKeW5uK9sDCSKOgxicig5Ca7QK/U61qe
-# s24XNu1r0xNcsHGHwXhviMXKYoIgnx4NoX4rXyETzNpAVHrFBOVncAsMMcQouNUo
-# TiRGOcktXLG4iYawXTJa9nQzP73pEHqm17bwVE3lbcZANr2rX8U82spLCmTETdJQ
-# Sn7yLwo88pWv6Ug3jW+N9GD4ganQcqv3AF8P/0ieOggEE02noApAuHPcoJpsuhhi
-# ModqRedFVcUXwzgQm7bdN+A6UcCB6vMh2RK2HlaW0aRcX219dIFm/iY0cQSu0Bd0
-# 4QUXZQXehKjJEtLpdTcfviWQWouPly0XRQIDAQABo2EwXzAOBgNVHQ8BAf8EBAMC
-# B4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwGQYDVR0RBBIwEIIOZGRwb3J1YmEubG9j
-# YWwwHQYDVR0OBBYEFAmwge0l28AM51uv3geLKcRHg7G7MA0GCSqGSIb3DQEBBQUA
-# A4IBAQAO5gr4bFb1QTb9y0S9X6enyWPGFAFEFUdx+LCy2Va8n/9jcG6veMef5bBB
-# xs/3M2mSR0WooG8wgXnvaKiRf19NBRjLw1M2h1uyKnwcUyudU+FM551Wzvqtrhnv
-# EwtTPZHnIpJb+WfpGKsElQSmDfD4i4cIUI37F3ZJ+70heuBqpj/QclWtfrIhvKOf
-# 2gQbigPMhhh54PrSho6Psyyfo4pEq5ZNxoyTtWoyGsKwqPvKAJI+vxlluPzoFLNl
-# 1onRcci3ZDtszd//RofPO+EHDHBV0BSiyZcSsbFxQPSy9pUOPi46RqbhsPm0te+S
-# 9Uw4nsXECZcI80zx9oZ1Dd0zLp5TMYICJjCCAiICAQEwgYQwcDEVMBMGCgmSJomT
-# 8ixkARkWBWxvY2FsMRgwFgYKCZImiZPyLGQBGRYIZGRwb3J1YmExFzAVBgNVBAMM
-# DmRkcG9ydWJhLmxvY2FsMSQwIgYJKoZIhvcNAQkBFhVsZ3J1bGljaEBkc3BvcnVi
-# YS5jb20CEFYhh52Hu7yaRlIKQKl9wf8wCQYFKw4DAhoFAKB4MBgGCisGAQQBgjcC
-# AQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYB
-# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFCl1st1K3TrQ
-# LSufFuAzVaAq3o3iMA0GCSqGSIb3DQEBAQUABIIBACay80+I4WYXeIGdNStwNXnN
-# lR9jUHxLaZKVY4YSCsY+e60Ny/iTmIdSyj27+GtL6GrWRJGWL60oEtRwFRSAlT1w
-# Xbp9CSgbZBvwl/6e8AFPlxNlHuR32LuNp1M0vejsF8zrgFBNxCHN5Mir605vf/8/
-# XPqqHiDLOPBxweXBiNIeXmWp18p2wt4qftaZ/1okgETt3ks8giVMgVGeUNalKikX
-# 9LOFJ7XyvK3drafh7ADu5E85x2DjPltC5s0YROyS9TT+9T9uat7Gpj+z+UDKUGdE
-# MqWHsAdkN1wWenAp9/357U3pu+OWcEJKAQHiasXWpjgFi11V8s7u57NDihlilmw=
-# SIG # End signature block
