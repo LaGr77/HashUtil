@@ -20,11 +20,9 @@ function CreateHash {
     param (
         [Parameter(Mandatory=$true)] 
             [string]
-            #File path
             $path,
         [Parameter(Mandatory=$true)]
             [string]
-            #algorithm
             $algo
     )
            
@@ -38,10 +36,10 @@ function CreateHash {
     Creates a HASH from a file by an algorithm
     
     .PARAMETER path
-    File path
+    [string] File path
     
     .PARAMETER algo
-    Algorithm
+    [string] Algorithm
 
     .INPUTS
     Any file
@@ -53,7 +51,6 @@ function CreateHash {
     CreateHash -path "c:\temp" -algo "MD5"
     
     .NOTES
-    Look at "Parameter(Mandatory=$true)"
     #>
 }
 
@@ -61,7 +58,6 @@ function CheckBoxAlgoritm {
     param (
         [Parameter(Mandatory=$true)] 
             [bool]
-            #status of check boxes;
             $status
     )
     
@@ -93,9 +89,7 @@ function CheckBoxAlgoritm {
     CheckBoxAlgoritm status $true
     
     .NOTES
-
     #>
-
 }
 
 function Message {
@@ -103,14 +97,12 @@ function Message {
     param (
         [Parameter(Mandatory=$true)]
             [string]
-            #The title of the message
             $title,
         [Parameter(Mandatory=$true)]
             [string]
-            #The body of the message
             $body
     )
-    #[Windows.MessageBox]::Show('A command is still running.')
+
     [windows.MessageBox]::Show($body, $title,'OK');
 
     <#
@@ -121,16 +113,15 @@ function Message {
         Show the message only with 'OK' button
 
         .PARAMETER title
-        The title of the message
+        [string] The title of the message
 
         .PARAMETER body
-        The body of the message
+        [string] The body of the message
 
         .EXAMPLE
         Message -title "Custom title" -body "Custom body"
 
         .NOTES
-        Look at "Parameter(Mandatory=$true)"
     #>
 }
 
@@ -169,7 +160,7 @@ function SelectFile {
         Find file and return path
 
         .PARAMETER initialPath
-        Initial path
+        [string] Initial path
 
         .EXAMPLE
         SelectFile
@@ -220,7 +211,7 @@ function SelectFolder {
         Find folder and return path
 
         .PARAMETER selectedPath
-        Initial path
+        [string] Initial path
 
         .EXAMPLE
         SelectFolder
@@ -258,6 +249,69 @@ function ReturnAlgoritm {
     ReturnAlgoritm
     
     .NOTES
+    #>
+}
+
+function TestPathIn {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)]
+            [bool]
+            $itIsFile
+    )
+
+    if (!([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
+        if ($itIsFile) {
+            if ((Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Leaf)) {
+                return $true
+            }
+        } else {
+            if ((Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Container)) {
+                return $true
+            }
+        }
+    }
+
+    return $false
+    
+        <#
+        .SYNOPSIS
+        Test tbIn 
+
+        .DESCRIPTION
+        Test that if tbIn.Text is a valid path
+
+        .PARAMETER itIsFile
+        [bool] Test pahh to file or folder
+
+        .EXAMPLE
+        TestPathIn -itIsFile $true
+
+        .NOTES
+    #>
+}
+
+function TestPathOut {
+
+    if (!([string]::IsNullOrEmpty($SyncHash.GuiElements.tbOut.Text.Trim()))) {
+        if ((Test-Path -Path $SyncHash.GuiElements.tbOut.Text.Trim() -PathType Container)) {
+            return $true
+        }
+    }
+
+    return $false
+    
+        <#
+        .SYNOPSIS
+        Test tbOut 
+
+        .DESCRIPTION
+        Test that if tbOut.Text is a valid path
+
+        .EXAMPLE
+        TestPathOut
+
+        .NOTES
     #>
 }
 
@@ -483,7 +537,7 @@ $SyncHash.GuiElements.cbOut.add_click({
             if ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked) {
                 $SyncHash.GuiElements.tbOut.Text = $SyncHash.GuiElements.tbIn.Text.Trim();
             }
-            if ($SyncHash.GuiElements.rbCreateHashSum.IsChecked) {
+            if ($SyncHash.GuiElements.rbCreateHashSum.IsChecked) {  ##TODO change
                 if (!([String]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
                     if (Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim()) {
                         $SyncHash.GuiElements.tbOut.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory; ## TODO test
@@ -506,16 +560,24 @@ $SyncHash.GuiElements.cbOut.add_click({
 $SyncHash.GuiElements.btnOut.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
 $SyncHash.GuiElements.btnGo.add_click({
     [bool]$canGo = $true;
-    ##Test
-    if ($SyncHash.GuiElements.rbCreateHash.IsChecked -or $SyncHash.GuiElements.rbHashControl.IsChecked) {
-        if ([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim())) {
+    ##Test tbIn
+    if ($SyncHash.GuiElements.rbCreateHash.IsChecked `
+            -or $SyncHash.GuiElements.rbHashControl.IsChecked `
+            -or $SyncHash.GuiElements.rbControlFromFile.IsChecked `
+            -or $SyncHash.GuiElements.rbCreateHashSum.IsChecked) {
+        if (!(TestPathIn -itIsFile $true)) {
             Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!";
-            $canGo = $false;
-        } elseif ((Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Leaf) -eq $false) {
-            Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Soubor neexistuje !!!";
             $canGo = $false;
         }
     }
+    if ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked) {
+        if (!(TestPathIn -itIsFile $false)) {
+            Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty ke slo$([char]0x017E)ce se soubory !!!";
+            $canGo = $false;
+        } 
+    }
+
+    ##Test tbHash
     if ($SyncHash.GuiElements.rbHashControl.IsChecked) {
         if ([string]::IsNullOrEmpty($SyncHash.GuiElements.tbHash.Text.Trim())) {
             Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Nen$([char]0x00ED) zad$([char]0x00E1)n kontroln$([char]0x00ED) HASH !!!";
@@ -525,6 +587,8 @@ $SyncHash.GuiElements.btnGo.add_click({
     if ($SyncHash.GuiElements.rbControlFromFile.IsChecked) {
         $canGo = $false;
     }
+
+    ##Test tbOut
 
     ##GO
     if ($canGo) {Write-Host "DRY RUN";}
