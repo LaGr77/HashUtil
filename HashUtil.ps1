@@ -368,19 +368,9 @@ $SyncHash.GuiElements.rbCreateHash.add_click({
 
     $SyncHash.GuiElements.tbOut.Text = "";
     $SyncHash.GuiElements.tbHash.Text = "";
-
-    <#    
-    if (!([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim()))) {
-        if (Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Any) {
-            if (((Get-Item $SyncHash.GuiElements.tbIn.Text.Trim()) -is [System.IO.DirectoryInfo])) {
-                $SyncHash.GuiElements.tbIn.Text = "";
-            }           
-        }
-    }
-
-#>
+    if (!(TestPathIn -itIsFile $true)) {$SyncHash.GuiElements.tbIn.Text = "";}
 })
-$SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
+$SyncHash.GuiElements.rbHashControl.add_click({ 
     ## Enable Component
     $SyncHash.GuiElements.lbIn.IsEnabled = $true;
     $SyncHash.GuiElements.tbIn.IsEnabled = $true;
@@ -408,6 +398,7 @@ $SyncHash.GuiElements.rbHashControl.add_click({ ##TODO : vynulování komponent
     $SyncHash.GuiElements.cbOut.IsChecked = $false;
 
     $SyncHash.GuiElements.tbOut.Text = "";
+    if (!(TestPathIn -itIsFile $true)) {$SyncHash.GuiElements.tbIn.Text = "";}
 
 })
 $SyncHash.GuiElements.rbControlFromFile.add_click({
@@ -439,6 +430,7 @@ $SyncHash.GuiElements.rbControlFromFile.add_click({
 
     $SyncHash.GuiElements.tbOut.Text = "";
     $SyncHash.GuiElements.tbHash.Text = "";
+    if (!(TestPathIn -itIsFile $true)) {$SyncHash.GuiElements.tbIn.Text = "";}
 
 })
 $SyncHash.GuiElements.rbCreateHashSum.add_click({
@@ -480,6 +472,9 @@ $SyncHash.GuiElements.rbCreateHashSum.add_click({
         $false { "LightGreen" }
     }
 
+    ## Other
+    if (!(TestPathIn -itIsFile $true)) {$SyncHash.GuiElements.tbIn.Text = "";}
+
 })
 $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 folder
     ## Enable Component
@@ -519,8 +514,15 @@ $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 fold
         $true  { "DarkGray" }
         $false { "LightGreen" }
     }
+
+    ## Other
+    if (TestPathIn -itIsFile $true) {
+        $SyncHash.GuiElements.tbIn.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory;
+    }
 })
-$SyncHash.GuiElements.btnIn.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
+$SyncHash.GuiElements.btnIn.add_click(
+    {Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";
+})
 $SyncHash.GuiElements.cbOut.add_click({
     switch ($SyncHash.GuiElements.cbOut.IsChecked) {
         $true  {
