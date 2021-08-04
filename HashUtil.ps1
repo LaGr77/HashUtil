@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 13.07.2021
+    Edited: 04.08.2021
 #>
 
 function CreateHash {
