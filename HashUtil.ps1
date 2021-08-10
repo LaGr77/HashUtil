@@ -522,6 +522,14 @@ $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 fold
 })
 $SyncHash.GuiElements.btnIn.add_click(
     {Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";
+    if (($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) `
+        -or ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) `
+        -or ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) `
+        -or ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true)) {
+            Write-Host "Select File";
+        } else {
+            Write-Host "select Folder";
+        }
 })
 $SyncHash.GuiElements.cbOut.add_click({
     switch ($SyncHash.GuiElements.cbOut.IsChecked) {
