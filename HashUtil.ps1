@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 04.08.2021
+    Edited: 10.08.2021
 #>
 
 function CreateHash {
@@ -520,16 +520,41 @@ $SyncHash.GuiElements.rbCreateHashSumMore.add_click({ ## TODO Change file 2 fold
         $SyncHash.GuiElements.tbIn.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory;
     }
 })
-$SyncHash.GuiElements.btnIn.add_click(
-    {Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";
+$SyncHash.GuiElements.btnIn.add_click({
+    [string]$_tempPath;
     if (($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true)) {
-            Write-Host "Select File";
+            
+        if ((TestPathIn -itIsFile $true) -eq $true) {
+            $_tempPath = SelectFile -initialPath ((Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory);
+        } elseif ((TestPathIn -itIsFile $false) -eq $true) {
+            $_tempPath = SelectFile -initialPath $SyncHash.GuiElements.tbIn.Text;
         } else {
-            Write-Host "select Folder";
+            $_tempPath = SelectFile -initialPath "C:\";
         }
+    } else {
+        if ((TestPathIn -itIsFile $true) -eq $true) {
+            $_tempPath = SelectFolder -selectedPath ((Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory);
+        } elseif ((TestPathIn -itIsFile $false) -eq $true) {
+            $_tempPath = SelectFolder -selectedPath $SyncHash.GuiElements.tbIn.Text;
+        } else {
+            $_tempPath = SelectFolder -selectedPath "C:\";
+        }      
+    }
+    if ([string]::IsNullOrEmpty($_tempPath) -eq $false ){
+        $SyncHash.GuiElements.tbIn.Text = $_tempPath.Trim();
+    }
+    if ((($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) `
+        -or ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true)) `
+        -and ($SyncHash.GuiElements.cbOut.IsChecked -eq $true)) {
+            if (!([String]::IsNullOrEmpty($_tempPath.Trim()))) {
+                if (Test-Path -Path $_tempPath.Trim()) {
+                    $SyncHash.GuiElements.tbOut.Text = (Get-Item -Path $_tempPath.Trim()).Directory; ## TODO test
+                }
+            }
+    }
 })
 $SyncHash.GuiElements.cbOut.add_click({
     switch ($SyncHash.GuiElements.cbOut.IsChecked) {
@@ -572,9 +597,9 @@ $SyncHash.GuiElements.btnGo.add_click({
     [bool]$canGo = $true;
     ##Test tbIn
     if ($SyncHash.GuiElements.rbCreateHash.IsChecked `
-            -or $SyncHash.GuiElements.rbHashControl.IsChecked `
-            -or $SyncHash.GuiElements.rbControlFromFile.IsChecked `
-            -or $SyncHash.GuiElements.rbCreateHashSum.IsChecked) {
+    -or $SyncHash.GuiElements.rbHashControl.IsChecked `
+    -or $SyncHash.GuiElements.rbControlFromFile.IsChecked `
+    -or $SyncHash.GuiElements.rbCreateHashSum.IsChecked) {
         if (!(TestPathIn -itIsFile $true)) {
             Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!";
             $canGo = $false;
@@ -594,11 +619,15 @@ $SyncHash.GuiElements.btnGo.add_click({
             $canGo = $false;            
         }
     } 
-    if ($SyncHash.GuiElements.rbControlFromFile.IsChecked) {
-        $canGo = $false;
-    }
 
     ##Test tbOut
+    if (($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) `
+    -or ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true)) {
+        if (!(TestPathOut)) {
+            Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ce !!!";
+            $canGo = $false;
+        }
+    }
 
     ##GO
     if ($canGo) {Write-Host "DRY RUN";}
