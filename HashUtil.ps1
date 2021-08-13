@@ -337,6 +337,11 @@ $SyncHash.GuiElements = @{};
 foreach ($N in $WpfFile.SelectNodes('//*[@x:Name]', $WpfNs)) {
     $SyncHash.GuiElements.Add($N.Name, $SyncHash.Window.FindName($N.Name));  
 }
+##Runspace
+$Runspace = [Runspacefactory]::CreateRunspace();
+$Runspace.ApartmentState = [Threading.ApartmentState]::STA; ##The Thread will create and enter a single-threaded apartment.
+$Runspace.Open();
+$Runspace.SessionStateProxy.SetVariable('SyncHash',$SyncHash);
 
 ## NO tread
 $SyncHash.GuiElements.rbCreateHash.add_click({
@@ -629,9 +634,14 @@ $SyncHash.GuiElements.btnGo.add_click({
         }
     }
 
+    ##TODO Disable components
+
     ##GO
     if ($canGo -eq $true) {Write-Host "Disable components";Write-Host "DRY RUN";}
     else {Write-Host "CAN'T GO";}
+
+    ##TODO Enable components
+
 
 })
 $SyncHash.GuiElements.btnRefresh.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
@@ -646,8 +656,13 @@ $SyncHash.GuiElements.rbCzech.add_click({Message -title ("Upozorn$([char]0x011B)
 $SyncHash.GuiElements.rbEnglish.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
 $SyncHash.GuiElements.rbRussian.add_click({Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";})
 
-##$SyncHash.Jobs = [System.Collections.ArrayList]@();
+$SyncHash.Window.add_closing({
+    ##TODO if Session stil work than cancel "Closing"
+})
 
-## Runaspace
+$SyncHash.Window.add_closed({
+    ##TODO Session test
+    $Runspace.Close();
+})
 
 $SyncHash.Window.ShowDialog() | Out-Null;
