@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 11.08.2021
+    Edited: 17.08.2021
 #>
 
 function CreateHash {
@@ -315,6 +315,25 @@ function TestPathOut {
     #>
 }
 
+function SaveGuiStatus {
+    foreach ($K in $SyncHash.GuiElements.Keys) {
+        $SyncHash.GuiEnable[$K]=$SyncHash.GuiElements[$K].IsEnabled;
+    }
+        <#
+        .SYNOPSIS
+        Saving the status of enabled/disabled components
+
+        .DESCRIPTION
+        Saving the status of enabled/disabled components
+
+        .EXAMPLE
+        SaveGuiStatus
+
+        .NOTES
+    #>
+
+}
+
 ## Gui
 ##Set-Location -Path $PSScriptRoot;
 Add-Type -AssemblyName 'PresentationCore', 'PresentationFramework';
@@ -333,10 +352,13 @@ $WpfNs.AddNamespace('mc', $WpfFile.DocumentElement.mc);
 $SyncHash = [Hashtable]::Synchronized(@{});
 $SyncHash.Window = [Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $WpfFile));
 $SyncHash.GuiElements = @{};
+$SyncHash.GuiEnable = @{};
 
 foreach ($N in $WpfFile.SelectNodes('//*[@x:Name]', $WpfNs)) {
-    $SyncHash.GuiElements.Add($N.Name, $SyncHash.Window.FindName($N.Name));  
+    $SyncHash.GuiElements.Add($N.Name, $SyncHash.Window.FindName($N.Name));
+    $SyncHash.GuiEnable.Add($N.Name, $true)
 }
+
 ##Runspace
 $Runspace = [Runspacefactory]::CreateRunspace();
 $Runspace.ApartmentState = [Threading.ApartmentState]::STA; ##The Thread will create and enter a single-threaded apartment.
