@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 11.08.2021
+    Edited: 17.08.2021
 #>
 
 function CreateHash {
@@ -378,6 +378,25 @@ RestoreComponets
 
 .NOTES
 #>
+}
+
+function SaveGuiStatus {
+    foreach ($K in $SyncHash.GuiElements.Keys) {
+        $SyncHash.GuiEnable[$K]=$SyncHash.GuiElements[$K].IsEnabled;
+    }
+        <#
+        .SYNOPSIS
+        Saving the status of enabled/disabled components
+
+        .DESCRIPTION
+        Saving the status of enabled/disabled components
+
+        .EXAMPLE
+        SaveGuiStatus
+
+        .NOTES
+    #>
+
 }
 
 ## Gui
