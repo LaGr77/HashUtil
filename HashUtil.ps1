@@ -710,14 +710,32 @@ $SyncHash.GuiElements.btnGo.add_click({
 
         ##TODO
 
-        SaveComponentsStatus;
-        DisableComponents;
+        if ($canGo -eq $true) { 
+            Write-Host "DRY RUN";
+            
+            $Global:Session = [PowerShell]::create().addScript({
+                $SyncHash.Error = $Error;
+                
+                $SyncHash.Window.Dispatcher.Invoke([Action]{
+                    $SyncHash.GuiElements.lbInfo.Content="Working ... ";
+                });
 
-        ##GO
-        if ($canGo -eq $true) { Write-Host "Disable components"; Write-Host "DRY RUN"; Start-Sleep -Seconds 5;}
-        else { Write-Host "CAN'T GO"; Start-Sleep -Seconds 5;}
+                Invoke-Expression -Command "Start-Sleep -Seconds 5";
+                ##Start-Sleep -Seconds 5
 
-        RestoreComponets;
+                $SyncHash.Window.Dispatcher.Invoke([Action]{
+                    $SyncHash.GuiElements.lbInfo.Content="Waiting ... ";
+                });
+
+            }, $true);
+        
+            $Global:Session.Runspace = $Runspace;
+            $Global:Handle = $Global:Session.BeginInvoke();
+
+        
+        
+        }
+        else { Write-Host "CAN'T GO"; }
 
     })
 $SyncHash.GuiElements.btnRefresh.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
