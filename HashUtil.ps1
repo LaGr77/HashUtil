@@ -380,25 +380,6 @@ RestoreComponets
 #>
 }
 
-function SaveGuiStatus {
-    foreach ($K in $SyncHash.GuiElements.Keys) {
-        $SyncHash.GuiEnable[$K]=$SyncHash.GuiElements[$K].IsEnabled;
-    }
-        <#
-        .SYNOPSIS
-        Saving the status of enabled/disabled components
-
-        .DESCRIPTION
-        Saving the status of enabled/disabled components
-
-        .EXAMPLE
-        SaveGuiStatus
-
-        .NOTES
-    #>
-
-}
-
 ## Gui
 ##Set-Location -Path $PSScriptRoot;
 Add-Type -AssemblyName 'PresentationCore', 'PresentationFramework';
@@ -423,14 +404,6 @@ foreach ($N in $WpfFile.SelectNodes('//*[@x:Name]', $WpfNs)) {
     $SyncHash.GuiElements.Add($N.Name, $SyncHash.Window.FindName($N.Name));  
     $SyncHash.GuiElementsEnable.Add($N.Name, $true);
 }
-
-##SaveComponentsStatus;
-##DisableComponents;
-##RestoreComponets;
-##foreach ($K in $SyncHash.GuiElementsEnable.Keys) {
-##    Write-Host $K ":" $SyncHash.GuiElementsEnable[$K];
-##}
-
 
 ##Runspace
 $Runspace = [Runspacefactory]::CreateRunspace();
@@ -735,37 +708,16 @@ $SyncHash.GuiElements.btnGo.add_click({
             }
         }
 
-        ##TODO Disable components
+        ##TODO
+
+        SaveComponentsStatus;
+        DisableComponents;
 
         ##GO
-        if ($canGo -eq $true) { 
-            Write-Host "DRY RUN";
-            
-            $Global:Session = [PowerShell]::create().addScript({
-                $SyncHash.Error = $Error;
-                
-                $SyncHash.Window.Dispatcher.Invoke([Action]{
-                    $SyncHash.GuiElements.lbInfo.Content="Working ... ";
-                });
+        if ($canGo -eq $true) { Write-Host "Disable components"; Write-Host "DRY RUN"; Start-Sleep -Seconds 5;}
+        else { Write-Host "CAN'T GO"; Start-Sleep -Seconds 5;}
 
-                Invoke-Expression -Command "Start-Sleep -Seconds 5";
-                ##Start-Sleep -Seconds 5
-
-                $SyncHash.Window.Dispatcher.Invoke([Action]{
-                    $SyncHash.GuiElements.lbInfo.Content="Waiting ... ";
-                });
-
-            }, $true);
-        
-            $Global:Session.Runspace = $Runspace;
-            $Global:Handle = $Global:Session.BeginInvoke();
-
-        
-        
-        }
-        else { Write-Host "CAN'T GO"; }
-
-        ##TODO Enable components
+        RestoreComponets;
 
     })
 $SyncHash.GuiElements.btnRefresh.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
