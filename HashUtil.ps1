@@ -699,7 +699,7 @@ $SyncHash.GuiElements.cbOut.add_click( {
         }
     })
 $SyncHash.GuiElements.btnOut.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
-$SyncHash.GuiElements.btnGo.add_click( {
+$SyncHash.GuiElements.btnGo.add_click({
         [bool]$canGo = $true;
         ##Test tbIn
         if (($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) `
@@ -738,7 +738,31 @@ $SyncHash.GuiElements.btnGo.add_click( {
         ##TODO Disable components
 
         ##GO
-        if ($canGo -eq $true) { Write-Host "Disable components"; Write-Host "DRY RUN"; }
+        if ($canGo -eq $true) { 
+            Write-Host "DRY RUN";
+            
+            $Global:Session = [PowerShell]::create().addScript({
+                $SyncHash.Error = $Error;
+                
+                $SyncHash.Window.Dispatcher.Invoke([Action]{
+                    $SyncHash.GuiElements.lbInfo.Content="Working ... ";
+                });
+
+                Invoke-Expression -Command "Start-Sleep -Seconds 5";
+                ##Start-Sleep -Seconds 5
+
+                $SyncHash.Window.Dispatcher.Invoke([Action]{
+                    $SyncHash.GuiElements.lbInfo.Content="Waiting ... ";
+                });
+
+            }, $true);
+        
+            $Global:Session.Runspace = $Runspace;
+            $Global:Handle = $Global:Session.BeginInvoke();
+
+        
+        
+        }
         else { Write-Host "CAN'T GO"; }
 
         ##TODO Enable components
@@ -758,6 +782,7 @@ $SyncHash.GuiElements.rbRussian.add_click( { Message -title ("Upozorn$([char]0x0
 
 $SyncHash.Window.add_closing( {
         ##TODO if Session stil work than cancel "Closing"
+        
     })
 
 $SyncHash.Window.add_closed( {
