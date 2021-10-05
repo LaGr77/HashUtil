@@ -719,9 +719,21 @@ $SyncHash.GuiElements.btnGo.add_click({
                 $SyncHash.Window.Dispatcher.Invoke([Action]{
                     $SyncHash.GuiElements.lbInfo.Content="Working ... ";
                 });
+                
+                ##TODO Disable components
 
-                Invoke-Expression -Command "Start-Sleep -Seconds 5";
-                ##Start-Sleep -Seconds 5
+                for ($i = 1; $i -lt 6; $i++) {
+                    $SyncHash.Window.Dispatcher.Invoke([Action]{
+                        $SyncHash.GuiElements.lbInfo.Content="Working ... "+$i.ToString()+"/5";
+                    });
+                    Invoke-Expression -Command "Start-Sleep -Seconds 1";
+                }
+               
+                ##TODO Case >> what we do
+                ##TODO HASH and simillar
+                ##TODO Change counter
+
+                ##TODO Enable components
 
                 $SyncHash.Window.Dispatcher.Invoke([Action]{
                     $SyncHash.GuiElements.lbInfo.Content="Waiting ... ";
