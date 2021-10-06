@@ -321,65 +321,6 @@ TestPathOut
 #>
 }
 
-function SaveComponentsStatus {
-    foreach ($Key in $SyncHash.GuiElements.Keys) {
-        $SyncHash.GuiElementsEnable[$Key] = $SyncHash.GuiElements[$Key].IsEnabled;
-    }
-
-<#
-.SYNOPSIS
-saves the status of enabled / disabled components
-
-.DESCRIPTION
-saves the status of enabled / disabled components
-
-.EXAMPLE
-SaveComponentsStatus
-
-.NOTES
-#>
-}
-
-function DisableComponents {
-    foreach ($Key in $SyncHash.GuiElements.Keys) {
-        if ($Key -ne "btnRefresh") {
-            $SyncHash.GuiElements[$Key].IsEnabled = $false;
-        } 
-    }
-
-<#
-.SYNOPSIS
-disable components
-
-.DESCRIPTION
-disable components
-
-.EXAMPLE
-DisableComponents
-
-.NOTES
-#>
-}
-
-function RestoreComponets {
-    foreach ($Key in $SyncHash.GuiElements.Keys) {
-        $SyncHash.GuiElements[$Key].IsEnabled = $SyncHash.GuiElementsEnable[$Key];
-    }
-
-<#
-.SYNOPSIS
-restore the status of the components
-
-.DESCRIPTION
-restore the status of the components
-
-.EXAMPLE
-RestoreComponets
-
-.NOTES
-#>
-}
-
 ## Gui
 ##Set-Location -Path $PSScriptRoot;
 Add-Type -AssemblyName 'PresentationCore', 'PresentationFramework';
@@ -718,24 +659,49 @@ $SyncHash.GuiElements.btnGo.add_click({
                 
                 $SyncHash.Window.Dispatcher.Invoke([Action]{
                     $SyncHash.GuiElements.lbInfo.Content="Working ... ";
-                });
                 
-                ##TODO Disable components
+                    ##Disable componets
+                    foreach ($Key in $SyncHash.GuiElements.Keys) {
+                        $SyncHash.GuiElementsEnable[$Key] = $SyncHash.GuiElements[$Key].IsEnabled;
+                        if ($Key -ne "btnRefresh") {
+                            $SyncHash.GuiElements[$Key].IsEnabled = $false;
+                        }
+                    }
+                });
 
+                <#
                 for ($i = 1; $i -lt 6; $i++) {
                     $SyncHash.Window.Dispatcher.Invoke([Action]{
                         $SyncHash.GuiElements.lbInfo.Content="Working ... "+$i.ToString()+"/5";
                     });
                     Invoke-Expression -Command "Start-Sleep -Seconds 1";
                 }
-               
+                #>
+
                 ##TODO Case >> what we do
                 ##TODO HASH and simillar
                 ##TODO Change counter
 
-                ##TODO Enable components
+                ##TODO FAIL, repar
+                switch ($true) {
+                    $SyncHash.GuiElements.rbCreateHash.IsChecked {
+                        $SyncHash.Window.Dispatcher.Invoke([Action]{
+                        $SyncHash.GuiElements.lbInfo.Content="Working ... Tworba HASHe";
+                    });
+                    Invoke-Expression -Command "Start-Sleep -Seconds 5"; }
+                    $SyncHash.GuiElements.rbHashControl.IsChecked {  }
+                    $SyncHash.GuiElements.rbControlFromFile.IsChecked {  }
+                    $SyncHash.GuiElements.rbCreateHashSum.IsChecked {  }
+                    $SyncHash.GuiElements.rbCreateHashSumMore.IsChecked {  }
+                    Default {}
+                }
 
+                ## Enable components
                 $SyncHash.Window.Dispatcher.Invoke([Action]{
+                    foreach ($Key in $SyncHash.GuiElements.Keys) {
+                        $SyncHash.GuiElements[$Key].IsEnabled = $SyncHash.GuiElementsEnable[$Key];
+                        $SyncHash.GuiElementsEnable[$Key] = $true;
+                    }
                     $SyncHash.GuiElements.lbInfo.Content="Waiting ... ";
                 });
 
@@ -743,9 +709,6 @@ $SyncHash.GuiElements.btnGo.add_click({
         
             $Global:Session.Runspace = $Runspace;
             $Global:Handle = $Global:Session.BeginInvoke();
-
-        
-        
         }
         else { Write-Host "CAN'T GO"; }
 
