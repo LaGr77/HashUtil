@@ -231,33 +231,6 @@ SelSelectFolderectFile selectedPath "C:\Temp"
 #>
 }
 
-function ReturnAlgoritm {
-    [array]$_algo = @();
-    if ($_var_cbMd5.IsChecked -eq $true) { $_algo += "MD5"; }
-    if ($_var_cbSha1.IsChecked -eq $true) { $_algo += "SHA1"; }
-    if ($_var_cbSha256.IsChecked -eq $true) { $_algo += "SHA256"; }
-    if ($_var_cbSha384.IsChecked -eq $true) { $_algo += "SHA384"; }
-    if ($_var_cbSha512.IsChecked -eq $true) { $_algo += "SHA512"; }
-    if ($_var_cbRipemd160.IsChecked -eq $true) { $_algo += "RIPEMD160"; }
-    if ($_var_cbMactripledes.IsChecked -eq $true) { $_algo += "MACTripleDES"; }
-    if ($_algo.Count -eq 0) { $_algo += "MD5"; }
-    
-    return $_algo;
-
-<#
-.SYNOPSIS
-Returns the selected algorithm
-    
-.DESCRIPTION
-Returns the selected algorithm or 'All' for batch processing
-    
-.EXAMPLE
-ReturnAlgoritm
-    
-.NOTES
-#>
-}
-
 function TestPathIn {
     [CmdletBinding()]
     param (
@@ -345,6 +318,19 @@ foreach ($N in $WpfFile.SelectNodes('//*[@x:Name]', $WpfNs)) {
     $SyncHash.GuiElements.Add($N.Name, $SyncHash.Window.FindName($N.Name));  
     $SyncHash.GuiElementsEnable.Add($N.Name, $true);
 }
+
+$SyncHash.PathIn = "";
+$SyncHash.PathOut = "";
+$SyncHash.WorkType = 0;
+$SyncHash.OriginalHash = "";
+$SyncHash.Algo = @{};
+$SyncHash.Algo.Add("MD5", $false);
+$SyncHash.Algo.Add("SHA1", $false);
+$SyncHash.Algo.Add("SHA256", $false);
+$SyncHash.Algo.Add("SHA384", $false);
+$SyncHash.Algo.Add("SHA512", $false);
+$SyncHash.Algo.Add("RIPEMD160", $false);
+$SyncHash.Algo.Add("MACTripleDES", $false);
 
 ##Runspace
 $Runspace = [Runspacefactory]::CreateRunspace();
@@ -615,6 +601,55 @@ $SyncHash.GuiElements.cbOut.add_click( {
 $SyncHash.GuiElements.btnOut.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
 $SyncHash.GuiElements.btnGo.add_click({
         [bool]$canGo = $true;
+
+        $SyncHash.PathIn = $SyncHash.GuiElements.tbIn.Text.Trim();
+        $SyncHash.PathOut = $SyncHash.GuiElements.tbOut.Text.Trim();
+        $SyncHash.OriginalHash = $SyncHash.GuiElements.tbHash.Text.Trim();
+        if ($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) {
+            $SyncHash.WorkType = 1;
+        } elseif ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) {
+            $SyncHash.WorkType = 2;
+        } elseif ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) {
+            $SyncHash.WorkType = 3;
+        } elseif (co$SyncHash.GuiElements.rbCreateHashSum.IsCheckedndition -eq $true) {
+            $SyncHash.WorkType = 4;
+        } elseif ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true) {
+            $SyncHash.WorkType = 5;
+        } else {
+            $SyncHash.WorkType = 0;
+        }
+        if ($SyncHash.GuiElements.cbMd5.IsChecked -eq $true) {
+            $SyncHash.Algo["MD5"] = $true;
+        } 
+        if ($SyncHash.GuiElements.cbSha1.IsChecked -eq $true) {
+            $SyncHash.Algo["SHA1"] = $true;
+        }
+        if ($SyncHash.GuiElements.cbSha256.IsChecked -eq $true) {
+            $SyncHash.Algo["SHA256"] = $true;
+        }
+        if ($SyncHash.GuiElements.cbSha384.IsChecked -eq $true) {
+            $SyncHash.Algo["SHA384"] = $true;
+        }
+        if ($SyncHash.GuiElements.cbSha512.IsChecked -eq $true) {
+            $SyncHash.Algo["SHA512"] = $true;
+        }
+        if ($SyncHash.GuiElements.cbRipemd160.IsChecked -eq $true) {
+            $SyncHash.Algo["RIPEMD160"] = $true;
+        }
+        if ($SyncHash.GuiElements.cbMactripledes.IsChecked -eq $true) {
+            $SyncHash.Algo["MACTripleDES"] = $true;
+        }
+        if (($SyncHash.GuiElements.cbMd5.IsChecked -eq $false) -and `
+            ($SyncHash.GuiElements.cbSha1.IsChecked -eq $false) -and `
+            ($SyncHash.GuiElements.cbSha256.IsChecked -eq $false) -and `
+            ($SyncHash.GuiElements.cbSha384.IsChecked -eq $false) -and `
+            ($SyncHash.GuiElements.cbSha512.IsChecked -eq $false) -and `
+            ($SyncHash.GuiElements.cbRipemd160.IsChecked -eq $false) -and `
+            ($SyncHash.GuiElements.cbMactripledes.IsChecked -eq $false)) {
+            
+                $SyncHash.Algo["MD5"] = $true;
+        }
+
         ##Test tbIn
         if (($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) `
                 -or ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) `
@@ -669,30 +704,20 @@ $SyncHash.GuiElements.btnGo.add_click({
                     }
                 });
 
-                <#
-                for ($i = 1; $i -lt 6; $i++) {
-                    $SyncHash.Window.Dispatcher.Invoke([Action]{
-                        $SyncHash.GuiElements.lbInfo.Content="Working ... "+$i.ToString()+"/5";
-                    });
-                    Invoke-Expression -Command "Start-Sleep -Seconds 1";
-                }
-                #>
-
                 ##TODO Case >> what we do
                 ##TODO HASH and simillar
                 ##TODO Change counter
-
-                ##TODO FAIL, repar
-                switch ($true) {
-                    $SyncHash.GuiElements.rbCreateHash.IsChecked {
+                switch ($SyncHash.WorkType) {
+                    1 {
                         $SyncHash.Window.Dispatcher.Invoke([Action]{
-                        $SyncHash.GuiElements.lbInfo.Content="Working ... Tworba HASHe";
-                    });
-                    Invoke-Expression -Command "Start-Sleep -Seconds 5"; }
-                    $SyncHash.GuiElements.rbHashControl.IsChecked {  }
-                    $SyncHash.GuiElements.rbControlFromFile.IsChecked {  }
-                    $SyncHash.GuiElements.rbCreateHashSum.IsChecked {  }
-                    $SyncHash.GuiElements.rbCreateHashSumMore.IsChecked {  }
+                            $SyncHash.GuiElements.lbInfo.Content="Working ... Tworba HASHe";
+                        });
+                        Invoke-Expression -Command "Start-Sleep -Seconds 5"; 
+                    }
+                    2 {  }
+                    3 {  }
+                    4 {  }
+                    5 {  }
                     Default {}
                 }
 
