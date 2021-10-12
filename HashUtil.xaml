@@ -42,6 +42,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Název" Width="90" MaxWidth="90" MinWidth="90"/>
                 <DataGridTextColumn Binding="{Binding Data}" Header="Data"/>
+                <DataGridTextColumn Binding="{Binding Result}" Header="Výsledek" Width="90" MaxWidth="90" MinWidth="90"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="btnGo" Content="Proveď" HorizontalAlignment="Left" Margin="453,449,0,0" VerticalAlignment="Top" Width="75" Height="23"/>

@@ -15,45 +15,6 @@
     Edited: 17.08.2021
 #>
 
-function CreateHash {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)] 
-        [string]
-        $path,
-        [Parameter(Mandatory = $true)]
-        [string]
-        $algo
-    )
-           
-    return (Get-FileHash -Path $path -Algorithm $algo).Hash;
-
-<#
-.SYNOPSIS
-Creates a HASH from file
-    
-.DESCRIPTION
-Creates a HASH from a file by an algorithm
-    
-.PARAMETER path
-[string] File path
-    
-.PARAMETER algo
-[string] Algorithm
-
-.INPUTS
-Any file
-    
-.OUTPUTS
-System.String. Created HASH file
-
-.EXAMPLE
-CreateHash -path "c:\temp" -algo "MD5"
-    
-.NOTES
-#>
-}
-
 function CheckBoxAlgoritm {
     param (
         [Parameter(Mandatory = $true)] 
@@ -324,13 +285,13 @@ $SyncHash.PathOut = "";
 $SyncHash.WorkType = 0;
 $SyncHash.OriginalHash = "";
 $SyncHash.Algo = @{};
-$SyncHash.Algo.Add("MD5", $false);
-$SyncHash.Algo.Add("SHA1", $false);
-$SyncHash.Algo.Add("SHA256", $false);
-$SyncHash.Algo.Add("SHA384", $false);
-$SyncHash.Algo.Add("SHA512", $false);
-$SyncHash.Algo.Add("RIPEMD160", $false);
 $SyncHash.Algo.Add("MACTripleDES", $false);
+$SyncHash.Algo.Add("RIPEMD160", $false);
+$SyncHash.Algo.Add("SHA512", $false);
+$SyncHash.Algo.Add("SHA384", $false);
+$SyncHash.Algo.Add("SHA256", $false);
+$SyncHash.Algo.Add("SHA1", $false);
+$SyncHash.Algo.Add("MD5", $false);
 
 ##Runspace
 $Runspace = [Runspacefactory]::CreateRunspace();
@@ -708,11 +669,26 @@ $SyncHash.GuiElements.btnGo.add_click({
                 ##TODO HASH and simillar
                 ##TODO Change counter
                 switch ($SyncHash.WorkType) {
-                    1 {
+                    1 { ## Hash
+                        $_max=0;
+                        $_pos=0;
+                        foreach ($_a in $SyncHash.Algo.Keys) { if ($SyncHash.Algo[$_a] -eq $true) {$_max += 1;}}
+
                         $SyncHash.Window.Dispatcher.Invoke([Action]{
-                            $SyncHash.GuiElements.lbInfo.Content="Working ... Tworba HASHe";
+                            $SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Data=$SyncHash.PathIn.Trim(); Result=$null});
+                            $SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";
                         });
-                        Invoke-Expression -Command "Start-Sleep -Seconds 5"; 
+
+                        foreach ($_a in $SyncHash.Algo.Keys) {
+                            if ($SyncHash.Algo[$_a] -eq $true) {
+                                $_pos += 1;
+                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";});
+
+                                $_h=((Get-FileHash -Path $SyncHash.PathIn.Trim() -Algorithm $_a).Hash).ToLower();
+                                
+                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Data=$_h; Result=$null});});     
+                            }
+                        }
                     }
                     2 {  }
                     3 {  }
