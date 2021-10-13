@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 17.08.2021
+    Edited: 13.10.2021
 #>
 
 function CheckBoxAlgoritm {
@@ -572,34 +572,21 @@ $SyncHash.GuiElements.btnGo.add_click({
             $SyncHash.WorkType = 2;
         } elseif ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) {
             $SyncHash.WorkType = 3;
-        } elseif (co$SyncHash.GuiElements.rbCreateHashSum.IsCheckedndition -eq $true) {
+        } elseif ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) {
             $SyncHash.WorkType = 4;
         } elseif ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true) {
             $SyncHash.WorkType = 5;
         } else {
             $SyncHash.WorkType = 0;
         }
-        if ($SyncHash.GuiElements.cbMd5.IsChecked -eq $true) {
-            $SyncHash.Algo["MD5"] = $true;
-        } 
-        if ($SyncHash.GuiElements.cbSha1.IsChecked -eq $true) {
-            $SyncHash.Algo["SHA1"] = $true;
-        }
-        if ($SyncHash.GuiElements.cbSha256.IsChecked -eq $true) {
-            $SyncHash.Algo["SHA256"] = $true;
-        }
-        if ($SyncHash.GuiElements.cbSha384.IsChecked -eq $true) {
-            $SyncHash.Algo["SHA384"] = $true;
-        }
-        if ($SyncHash.GuiElements.cbSha512.IsChecked -eq $true) {
-            $SyncHash.Algo["SHA512"] = $true;
-        }
-        if ($SyncHash.GuiElements.cbRipemd160.IsChecked -eq $true) {
-            $SyncHash.Algo["RIPEMD160"] = $true;
-        }
-        if ($SyncHash.GuiElements.cbMactripledes.IsChecked -eq $true) {
-            $SyncHash.Algo["MACTripleDES"] = $true;
-        }
+            $SyncHash.Algo["MD5"] = $SyncHash.GuiElements.cbMd5.IsChecked;
+            $SyncHash.Algo["SHA1"] = $SyncHash.GuiElements.cbSha1.IsChecked;
+            $SyncHash.Algo["SHA256"] = $SyncHash.GuiElements.cbSha256.IsChecked;
+            $SyncHash.Algo["SHA384"] = $SyncHash.GuiElements.cbSha384.IsChecked;
+            $SyncHash.Algo["SHA512"] = $SyncHash.GuiElements.cbSha512.IsChecked;
+            $SyncHash.Algo["RIPEMD160"] = $SyncHash.GuiElements.cbRipemd160.IsChecked;
+            $SyncHash.Algo["MACTripleDES"] = $SyncHash.GuiElements.cbMactripledes.IsChecked;
+
         if (($SyncHash.GuiElements.cbMd5.IsChecked -eq $false) -and `
             ($SyncHash.GuiElements.cbSha1.IsChecked -eq $false) -and `
             ($SyncHash.GuiElements.cbSha256.IsChecked -eq $false) -and `
@@ -679,7 +666,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                             $SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";
                         });
 
-                        foreach ($_a in $SyncHash.Algo.Keys) {
+                        foreach ($_a in ($SyncHash.Algo.Keys | Sort-Object Keys)) {
                             if ($SyncHash.Algo[$_a] -eq $true) {
                                 $_pos += 1;
                                 $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";});
@@ -690,10 +677,65 @@ $SyncHash.GuiElements.btnGo.add_click({
                             }
                         }
                     }
-                    2 {  }
+                    2 { 
+                        $_max=0;
+                        $_pos=0;
+                        foreach ($_a in $SyncHash.Algo.Keys) { if ($SyncHash.Algo[$_a] -eq $true) {$_max += 1;}}
+
+                        $SyncHash.Window.Dispatcher.Invoke([Action]{
+                            $SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Result=$null; Data=$SyncHash.PathIn.Trim()});
+                            $SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";
+                        });
+
+                        foreach ($_a in $SyncHash.Algo.Keys | Sort-Object Keys) {
+                            if ($SyncHash.Algo[$_a] -eq $true) {
+                                $_pos += 1;
+                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";});
+
+                                $_h=((Get-FileHash -Path $SyncHash.PathIn.Trim() -Algorithm $_a).Hash).ToLower();
+
+                                if ($_h -ceq $SyncHash.OriginalHash.ToLower()) {
+                                    $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Result="OK"; Data=$_h});});     
+                                } else {
+                                    $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Result="FAIL"; Data=$_h});});
+                                }
+                            }
+                        }
+                    }
                     3 {  }
                     4 {  }
-                    5 {  }
+                    5 {
+                        $_max=0;
+                        $_pos=0;
+                        $_fileName="";
+                        $_files = (Get-ChildItem -Path $SyncHash.PathIn) | Sort-Object -Property Length;
+
+                        foreach ($_a in $SyncHash.Algo.Keys) { if ($SyncHash.Algo[$_a] -eq $true) {$_max += 1;}}
+                        $_max = $_max * $_files.Length;
+
+                        $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";});
+
+                        foreach ($_f in $_files) {
+                            $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Result=$null; Data=$_f.FullName});});
+                            
+                            foreach ($_a in $SyncHash.Algo.Keys | Sort-Object Keys) {
+                                if ($SyncHash.Algo[$_a] -eq $true) {
+                                    $_pos += 1;
+                                    $_fileName = ($_a + "SUM").ToUpper();
+
+                                    $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content="Working ... ("+$_pos+"/"+$_max+")";});
+                                
+                                    $_h=((Get-FileHash -Path $_f.FullName -Algorithm $_a).Hash).ToLower();
+
+                                    $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Data=$_h; Result=$null});});     
+
+                                ## TODO Write to file
+
+                                }
+                            }
+
+                        }
+                    }
                     Default {}
                 }
 
@@ -727,13 +769,13 @@ $SyncHash.GuiElements.rbEnglish.add_click( { Message -title ("Upozorn$([char]0x0
 $SyncHash.GuiElements.rbRussian.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
 
 $SyncHash.Window.add_closing( {
-        ##TODO if Session stil work than cancel "Closing"
-        
-    })
+    if ($Global:Session -ne $null -and $Global:Handle.IsCompleted -eq $false) {
+        Message -title "Upozorn$([char]0x011B)n$([char]0x00ED)" -body "St$([char]0x00E1)le pracuji !!!"
+    }
+})
 
-$SyncHash.Window.add_closed( {
-        ##TODO Session test
-        $Runspace.Close();
-    })
+$SyncHash.Window.add_closed({
+    if ($Global:Session -ne $null) {$Runspace.Close();}
+})
 
 $SyncHash.Window.ShowDialog() | Out-Null;
