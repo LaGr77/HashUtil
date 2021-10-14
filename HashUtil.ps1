@@ -255,6 +255,8 @@ TestPathOut
 #>
 }
 
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+
 ## Gui
 ##Set-Location -Path $PSScriptRoot;
 Add-Type -AssemblyName 'PresentationCore', 'PresentationFramework';
@@ -564,8 +566,12 @@ $SyncHash.GuiElements.btnGo.add_click({
         [bool]$canGo = $true;
 
         $SyncHash.PathIn = $SyncHash.GuiElements.tbIn.Text.Trim();
+
         $SyncHash.PathOut = $SyncHash.GuiElements.tbOut.Text.Trim();
+        if ($SyncHash.PathOut -notmatch '\\$') {$SyncHash.PathOut += '\';}
+
         $SyncHash.OriginalHash = $SyncHash.GuiElements.tbHash.Text.Trim();
+
         if ($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) {
             $SyncHash.WorkType = 1;
         } elseif ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) {
@@ -646,7 +652,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                     ##Disable componets
                     foreach ($Key in $SyncHash.GuiElements.Keys) {
                         $SyncHash.GuiElementsEnable[$Key] = $SyncHash.GuiElements[$Key].IsEnabled;
-                        if ($Key -ne "btnRefresh") {
+                        if (!(($Key -eq "btnRefresh") -or ($Key -eq "dgData"))) {
                             $SyncHash.GuiElements[$Key].IsEnabled = $false;
                         }
                     }
@@ -730,10 +736,12 @@ $SyncHash.GuiElements.btnGo.add_click({
                                     $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Data=$_h; Result=$null});});     
 
                                 ## TODO Write to file
-
+                                    if ((Test-Path -Path $_fileName -PathType Leaf) -eq $false) {
+                                        New-Item -Path $SyncHash.PathOut -ItemType File -Name $_fileName 
+                                    }
+                                    Add-Content -Path ($SyncHash.PathOut + $_fileName) -Encoding UTF8 -Value ($_h + " *" + $_f.Name)
                                 }
                             }
-
                         }
                     }
                     Default {}
@@ -768,9 +776,10 @@ $SyncHash.GuiElements.rbCzech.add_click( { Message -title ("Upozorn$([char]0x011
 $SyncHash.GuiElements.rbEnglish.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
 $SyncHash.GuiElements.rbRussian.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
 
-$SyncHash.Window.add_closing( {
+$SyncHash.Window.add_closing( { ## TODO cancel
     if ($Global:Session -ne $null -and $Global:Handle.IsCompleted -eq $false) {
         Message -title "Upozorn$([char]0x011B)n$([char]0x00ED)" -body "St$([char]0x00E1)le pracuji !!!"
+
     }
 })
 
