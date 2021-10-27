@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 15.10.2021
+    Edited: 27.10.2021
 #>
 
 function CheckBoxAlgoritm {
@@ -233,8 +233,14 @@ TestPathIn -itIsFile $true
 }
 
 function TestPathOut {
-    if (([string]::IsNullOrEmpty($SyncHash.GuiElements.tbOut.Text.Trim())) -eq $false) {
-        if ((Test-Path -Path $SyncHash.GuiElements.tbOut.Text.Trim() -PathType Container) -eq $true) {
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [string]
+        $path = "C:\"
+    )
+    if (([string]::IsNullOrEmpty($path)) -eq $false) {
+        if ((Test-Path -Path $path -PathType Container) -eq $true) {
             return $true
         }
     }
@@ -243,13 +249,74 @@ function TestPathOut {
     
 <#
 .SYNOPSIS
-Test tbOut 
+Test path 
 
 .DESCRIPTION
-Test that if tbOut.Text is a valid path
+Test that if path is a valid path
 
 .EXAMPLE
-TestPathOut
+TestPath -path "d:\"
+
+.NOTES
+#>
+}
+
+function changeInputComponents {
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [int]
+        $para = 1
+    )
+
+    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
+    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
+    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
+
+    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
+    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
+
+    switch ($para) {
+        1 {
+            $SyncHash.GuiElements.lbHash.IsEnabled = $false;
+            $SyncHash.GuiElements.tbHash.IsEnabled = $false;
+            $SyncHash.GuiElements.tbHash.Background = "DarkGray";
+
+            $SyncHash.GuiElements.tbHash.Text = "";
+            if ((TestPathIn -itIsFile $true) -eq $false) { $SyncHash.GuiElements.tbIn.Text = ""; }
+            break;
+        }
+        2 {
+            $SyncHash.GuiElements.lbHash.IsEnabled = $true;
+            $SyncHash.GuiElements.tbHash.IsEnabled = $true;
+
+            $SyncHash.GuiElements.tbHash.Background = "LightGreen";
+
+            if ((TestPathIn -itIsFile $true) -eq $false) { $SyncHash.GuiElements.tbIn.Text = ""; }
+            break;
+        }
+        3 {
+            $SyncHash.GuiElements.lbHash.IsEnabled = $false;
+            $SyncHash.GuiElements.tbHash.IsEnabled = $false;
+
+            $SyncHash.GuiElements.tbHash.Background = "DarkGray";   
+    
+            if ((TestPathIn -itIsFile $true) -eq $true) {
+                $SyncHash.GuiElements.tbIn.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory;
+            }
+            break;
+        }
+    }
+    
+<#
+.SYNOPSIS
+Enable/Disable input box 
+
+.DESCRIPTION
+Enable/Disable input box, change contents
+
+.EXAMPLE
+changeInputComponents -para 1;
 
 .NOTES
 #>
@@ -302,184 +369,12 @@ $Runspace.Open();
 $Runspace.SessionStateProxy.SetVariable('SyncHash', $SyncHash);
 
 ## NO tread
-$SyncHash.GuiElements.rbCreateHash.add_click({
-    ## Enable Components
-    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
+$SyncHash.GuiElements.rbCreateHash.add_click({changeInputComponents -para 1;});
+$SyncHash.GuiElements.rbHashControl.add_click({changeInputComponents -para 2;});
+$SyncHash.GuiElements.rbControlFromFile.add_click({changeInputComponents -para 1;});
+$SyncHash.GuiElements.rbCreateHashSum.add_click({changeInputComponents -para 1;});
+$SyncHash.GuiElements.rbCreateHashSumMore.add_click({changeInputComponents -para 3;});
 
-    $SyncHash.GuiElements.lbHash.IsEnabled = $false;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-
-    $SyncHash.GuiElements.cbOut.IsEnabled = $false;
-
-    $SyncHash.GuiElements.lbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.tbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.btnOut.IsEnabled = $false;
-
-    ## Colored Components
-    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.tbHash.Background = "DarkGray";
-
-    $SyncHash.GuiElements.tbOut.Background = "DarkGray";
-    $SyncHash.GuiElements.btnOut.Background = "DarkGray";
-
-    ## Other
-    $SyncHash.GuiElements.cbOut.IsChecked = $false;
-
-    $SyncHash.GuiElements.tbOut.Text = "";
-    $SyncHash.GuiElements.tbHash.Text = "";
-    if ((TestPathIn -itIsFile $true) -eq $false) { $SyncHash.GuiElements.tbIn.Text = ""; }
-})
-$SyncHash.GuiElements.rbHashControl.add_click({ 
-    ## Enable Component
-    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $true;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $true;
-
-    $SyncHash.GuiElements.cbOut.IsEnabled = $false;
-
-    $SyncHash.GuiElements.lbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.tbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.btnOut.IsEnabled = $false;
-
-    ## Colored Components
-    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.tbHash.Background = "LightGreen";
-
-    $SyncHash.GuiElements.tbOut.Background = "DarkGray";
-    $SyncHash.GuiElements.btnOut.Background = "DarkGray";
-
-    ## Other
-    $SyncHash.GuiElements.cbOut.IsChecked = $false;
-
-    $SyncHash.GuiElements.tbOut.Text = "";
-    if ((TestPathIn -itIsFile $true) -eq $false) { $SyncHash.GuiElements.tbIn.Text = ""; }
-})
-$SyncHash.GuiElements.rbControlFromFile.add_click({
-    ## Enable Component
-    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $false;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-
-    $SyncHash.GuiElements.cbOut.IsEnabled = $false;
-
-    $SyncHash.GuiElements.lbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.tbOut.IsEnabled = $false;
-    $SyncHash.GuiElements.btnOut.IsEnabled = $false;
-
-    ## Colored Components
-    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.tbHash.Background = "DarkGray";
-
-    $SyncHash.GuiElements.tbOut.Background = "DarkGray";
-    $SyncHash.GuiElements.btnOut.Background = "DarkGray";
-
-    ## Other
-    $SyncHash.GuiElements.cbOut.IsChecked = $false;
-
-    $SyncHash.GuiElements.tbOut.Text = "";
-    $SyncHash.GuiElements.tbHash.Text = "";
-    if ((TestPathIn -itIsFile $true) -eq $false) { $SyncHash.GuiElements.tbIn.Text = ""; }
-})
-$SyncHash.GuiElements.rbCreateHashSum.add_click({
-    ## Enable Component
-    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $false;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-    
-    $SyncHash.GuiElements.cbOut.IsEnabled = $true;
-    
-    $SyncHash.GuiElements.lbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { $false }
-        $false { $true }
-    }
-    $SyncHash.GuiElements.tbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { $false }
-        $false { $true }
-    }
-    $SyncHash.GuiElements.btnOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { $false }
-        $false { $true }
-    }
-
-    ## Colored Components
-    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.tbHash.Background = "DarkGray";
-
-    $SyncHash.GuiElements.tbOut.Background = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { "DarkGray" }
-        $false { "LightGreen" }
-    }
-    $SyncHash.GuiElements.btnOut.Background = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { "DarkGray" }
-        $false { "LightGreen" }
-    }
-
-    ## Other
-    if ((TestPathIn -itIsFile $true) -eq $false) { $SyncHash.GuiElements.tbIn.Text = ""; }
-})
-$SyncHash.GuiElements.rbCreateHashSumMore.add_click( { ## TODO Change file 2 folder
-    ## Enable Component
-    $SyncHash.GuiElements.lbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.tbIn.IsEnabled = $true;
-    $SyncHash.GuiElements.btnIn.IsEnabled = $true;
-
-    $SyncHash.GuiElements.lbHash.IsEnabled = $false;
-    $SyncHash.GuiElements.tbHash.IsEnabled = $false;
-
-    $SyncHash.GuiElements.cbOut.IsEnabled = $true; 
-
-    $SyncHash.GuiElements.lbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { $false }
-        $false { $true }
-    }
-    $SyncHash.GuiElements.tbOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { $false }
-        $false { $true }
-    }
-    $SyncHash.GuiElements.btnOut.IsEnabled = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { $false }
-        $false { $true }
-    }
-
-    ## Colored Components
-    $SyncHash.GuiElements.tbIn.Background = "LightGreen";
-    $SyncHash.GuiElements.btnIn.Background = "LightGreen";
-
-    $SyncHash.GuiElements.tbHash.Background = "DarkGray";   
-    
-    $SyncHash.GuiElements.tbOut.Background = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { "DarkGray" }
-        $false { "LightGreen" }
-    }
-    $SyncHash.GuiElements.btnOut.Background = switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true { "DarkGray" }
-        $false { "LightGreen" }
-    }
-
-    ## Other
-    if ((TestPathIn -itIsFile $true) -eq $true) {
-        $SyncHash.GuiElements.tbIn.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory;
-    }
-})
 $SyncHash.GuiElements.btnIn.add_click({
     [string]$_tempPath;
     if (($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) `
@@ -505,61 +400,17 @@ $SyncHash.GuiElements.btnIn.add_click({
     }
     if ([string]::IsNullOrEmpty($_tempPath) -eq $false ) {
             $SyncHash.GuiElements.tbIn.Text = $_tempPath.Trim();
-        }
-    if ((($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) `
-        -or ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true)) `
-        -and ($SyncHash.GuiElements.cbOut.IsChecked -eq $true)) {
-        if (([String]::IsNullOrEmpty($_tempPath.Trim())) -eq $false) {
-            if ((Test-Path -Path $_tempPath.Trim()) -eq $true) {
-                $SyncHash.GuiElements.tbOut.Text = (Get-Item -Path $_tempPath.Trim()).Directory; ## TODO test
-            }
-        }
     }
-})
-$SyncHash.GuiElements.cbOut.add_click({
-    switch ($SyncHash.GuiElements.cbOut.IsChecked) {
-        $true {
-            ## Enable Component
-            $SyncHash.GuiElements.lbOut.IsEnabled = $false;
-            $SyncHash.GuiElements.tbOut.IsEnabled = $false;
-            $SyncHash.GuiElements.btnOut.IsEnabled = $false;
+});
 
-            ## Colored Components
-            $SyncHash.GuiElements.tbOut.Background = "DarkGray";
-            $SyncHash.GuiElements.btnOut.Background = "DarkGray";
-
-            ## Other
-            if ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true) {
-                $SyncHash.GuiElements.tbOut.Text = $SyncHash.GuiElements.tbIn.Text.Trim();
-            }
-            if ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) {
-                ##TODO change
-                if (([String]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim())) -eq $false) {
-                    if ((Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim()) -eq $false) {
-                        $SyncHash.GuiElements.tbOut.Text = (Get-Item -Path $SyncHash.GuiElements.tbIn.Text.Trim()).Directory; ## TODO test
-                    }
-                }
-            }
-        }
-        $false {
-            ## Enable Component
-            $SyncHash.GuiElements.lbOut.IsEnabled = $true;
-            $SyncHash.GuiElements.tbOut.IsEnabled = $true;
-            $SyncHash.GuiElements.btnOut.IsEnabled = $true;
-
-            ## Colored Components
-            $SyncHash.GuiElements.tbOut.Background = "LightGreen";
-            $SyncHash.GuiElements.btnOut.Background = "LightGreen";
-        }
-    }
-})
-$SyncHash.GuiElements.btnOut.add_click( { Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; })
 $SyncHash.GuiElements.btnGo.add_click({
+    Write-Host "DRY RUN";
     [bool]$canGo = $true;
 
     $SyncHash.PathIn = $SyncHash.GuiElements.tbIn.Text.Trim();
 
-    $SyncHash.PathOut = $SyncHash.GuiElements.tbOut.Text.Trim();
+    $SyncHash.PathOut = (Get-Item -Path $SyncHash.PathIn).Directory.ToString();
+
     if ($SyncHash.PathOut -notmatch '\\$') {$SyncHash.PathOut += '\';}
 
     $SyncHash.OriginalHash = $SyncHash.GuiElements.tbHash.Text.Trim();
@@ -621,18 +472,26 @@ $SyncHash.GuiElements.btnGo.add_click({
         }
     } 
 
-    ##Test tbOut
+    ##Test Output path
+    ##Todo test permision to write
     if (($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true)) {
-        if ((TestPathOut) -eq $false) {
-            Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ce !!!";
+        if ((TestPathOut -path $SyncHash.PathOut) -eq $false) {
+            Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba ve v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ce !!!";
             $canGo = $false;
         }
     }
 
-    ##TODO
+    Try {
+        [io.file]::OpenWrite("C:\Users\LA5012328\txt.txt").close();
+        Remove-Item "c:\temp\test.txt";
+    }
+    Catch {
+        Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba z$([char]0x00E1)pisu do v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ky !!!";
+        ## Todo  Output path
+    }
+
     if ($canGo -eq $true) { 
-        Write-Host "DRY RUN";
             
         $Global:Session = [PowerShell]::create().addScript({
             $SyncHash.Error = $Error;
@@ -673,6 +532,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                             $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Data=$_h; Result=$null});});     
                         }
                     }
+                    break;
                 }
                 2 { 
                     $_max=0;
@@ -698,8 +558,12 @@ $SyncHash.GuiElements.btnGo.add_click({
                             }
                         }
                     }
+                    break;
                 }
-                3 {  }
+                3 { 
+                    ##TODO
+                    break;
+                }
                 4 {
                     $_max=0;
                     $_pos=0;
@@ -728,6 +592,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                             Add-Content -Path ($SyncHash.PathOut + $_file.Name + "." + $_a) -Encoding UTF8 -Value ($_h + " *" + $_file.Name)
                         }
                     }
+                    break;
                 }
                 5 {
                     $_max=0;
@@ -761,8 +626,8 @@ $SyncHash.GuiElements.btnGo.add_click({
                             }
                         }
                     }
+                    break;
                 }
-                Default {}
             }
 
             ## Enable components
