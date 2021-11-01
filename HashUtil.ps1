@@ -409,7 +409,11 @@ $SyncHash.GuiElements.btnGo.add_click({
 
     $SyncHash.PathIn = $SyncHash.GuiElements.tbIn.Text.Trim();
 
-    $SyncHash.PathOut = (Get-Item -Path $SyncHash.PathIn).Directory.ToString();
+    if ((Get-Item -path $SyncHash.PathIn) -is [System.IO.DirectoryInfo]) {
+        $SyncHash.PathOut = $SyncHash.PathIn;
+    } else {
+        $SyncHash.PathOut = (Get-Item -Path $SyncHash.PathIn).Directory.ToString();
+    }
 
     if ($SyncHash.PathOut -notmatch '\\$') {$SyncHash.PathOut += '\';}
 
@@ -483,8 +487,8 @@ $SyncHash.GuiElements.btnGo.add_click({
     }
 
     Try {
-        [io.file]::OpenWrite("C:\Users\LA5012328\txt.txt").close();
-        Remove-Item "c:\temp\test.txt";
+        [io.file]::OpenWrite($SyncHash.PathOut + "txt.txt").close();
+        Remove-Item ($SyncHash.PathOut + "txt.txt");
     }
     Catch {
         Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba z$([char]0x00E1)pisu do v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ky !!!";
@@ -619,7 +623,7 @@ $SyncHash.GuiElements.btnGo.add_click({
 
                                 $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Data=$_h; Result=$null});});     
 
-                                if ((Test-Path -Path $_fileName -PathType Leaf) -eq $false) {
+                                if ((Test-Path -Path ($SyncHash.PathOut + $_fileName) -PathType Leaf) -eq $false) {
                                     New-Item -Path $SyncHash.PathOut -ItemType File -Name $_fileName 
                                 }
                                 Add-Content -Path ($SyncHash.PathOut + $_fileName) -Encoding UTF8 -Value ($_h + " *" + $_f.Name)
