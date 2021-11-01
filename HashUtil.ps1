@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 27.10.2021
+    Edited: 1.11.2021
 #>
 
 function CheckBoxAlgoritm {
