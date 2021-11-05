@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 1.11.2021
+    Edited: 5.11.2021
 #>
 
 function CheckBoxAlgoritm {
@@ -203,17 +203,17 @@ function TestPathIn {
     if (([string]::IsNullOrEmpty($SyncHash.GuiElements.tbIn.Text.Trim())) -eq $false) {
         if ($itIsFile -eq $true) {
             if ((Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Leaf) -eq $true) {
-                return $true
+                return $true;
             }
         }
         else {
             if ((Test-Path -Path $SyncHash.GuiElements.tbIn.Text.Trim() -PathType Container) -eq $true) {
-                return $true
+                return $true;
             }
         }
     }
 
-    return $false
+    return $false;
     
 <#
 .SYNOPSIS
@@ -241,11 +241,11 @@ function TestPathOut {
     )
     if (([string]::IsNullOrEmpty($path)) -eq $false) {
         if ((Test-Path -Path $path -PathType Container) -eq $true) {
-            return $true
+            return $true;
         }
     }
 
-    return $false
+    return $false;
     
 <#
 .SYNOPSIS
@@ -317,6 +317,66 @@ Enable/Disable input box, change contents
 
 .EXAMPLE
 changeInputComponents -para 1;
+
+.NOTES
+#>
+}
+
+function changeLanguageM {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [bool]
+        $id
+    )
+
+    switch ($id) {
+        1 { 
+            switch ($true) { ## Upozornění
+                $SyncHash.GuiElements.rbCzech.IsChecked { return "Upozorn$([char]0x011B)n$([char]0x00ED)"; }
+                $SyncHash.GuiElements.rbEnglish.IsChecked { return ""; }
+                $SyncHash.GuiElements.rbRussian.IsChecked { return ""; }
+            }
+            ##if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) {return "Upozorn$([char]0x011B)n$([char]0x00ED)";}
+
+
+        }
+        2 {
+            switch ($true) {
+                $SyncHash.GuiElements.rbCzech.IsChecked { return ""; }
+                $SyncHash.GuiElements.rbEnglish.IsChecked { return ""; }
+                $SyncHash.GuiElements.rbRussian.IsChecked { return ""; }
+            }
+        }
+        Default {}
+    }
+
+
+<#
+.SYNOPSIS
+Change Language for message
+
+.DESCRIPTION
+Change Language for message
+
+.EXAMPLE
+changeLanguageM -id 1;
+
+.NOTES
+#>
+}
+
+function changeLanguageGUI {
+
+<#
+.SYNOPSIS
+Change Language for GUI
+
+.DESCRIPTION
+Change Language for GUI
+
+.EXAMPLE
+changeLanguageGUI;
 
 .NOTES
 #>
@@ -419,19 +479,12 @@ $SyncHash.GuiElements.btnGo.add_click({
 
     $SyncHash.OriginalHash = $SyncHash.GuiElements.tbHash.Text.Trim();
 
-    if ($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) {
-        $SyncHash.WorkType = 1;
-    } elseif ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) {
-        $SyncHash.WorkType = 2;
-    } elseif ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) {
-        $SyncHash.WorkType = 3;
-    } elseif ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) {
-        $SyncHash.WorkType = 4;
-    } elseif ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true) {
-        $SyncHash.WorkType = 5;
-    } else {
-        $SyncHash.WorkType = 0;
-    }
+    if ($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) {$SyncHash.WorkType = 1;}
+        elseif ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) {$SyncHash.WorkType = 2;}
+        elseif ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) {$SyncHash.WorkType = 3;}
+        elseif ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true) {$SyncHash.WorkType = 4;}
+        elseif ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true) {$SyncHash.WorkType = 5;}
+        else {$SyncHash.WorkType = 0;}
     $SyncHash.Algo["MD5"] = $SyncHash.GuiElements.cbMd5.IsChecked;
     $SyncHash.Algo["SHA1"] = $SyncHash.GuiElements.cbSha1.IsChecked;
     $SyncHash.Algo["SHA256"] = $SyncHash.GuiElements.cbSha256.IsChecked;
@@ -451,13 +504,14 @@ $SyncHash.GuiElements.btnGo.add_click({
             $SyncHash.Algo["MD5"] = $true;
     }
 
+    ##TODO při prázdném hází chybu, podívat se na to.
     ##Test tbIn
     if (($SyncHash.GuiElements.rbCreateHash.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true)) {
         if ((TestPathIn -itIsFile $true) -eq $false) {
-            Message -title ("Upozorn$([char]0x011B)n$([char]0x00ED)") -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!";
+            Message -title (changeLanguageM -id 1) -body "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!";
             $canGo = $false;
         }
     }
@@ -624,9 +678,9 @@ $SyncHash.GuiElements.btnGo.add_click({
                                 $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Data=$_h; Result=$null});});     
 
                                 if ((Test-Path -Path ($SyncHash.PathOut + $_fileName) -PathType Leaf) -eq $false) {
-                                    New-Item -Path $SyncHash.PathOut -ItemType File -Name $_fileName 
+                                    New-Item -Path $SyncHash.PathOut -ItemType File -Name $_fileName;
                                 }
-                                Add-Content -Path ($SyncHash.PathOut + $_fileName) -Encoding UTF8 -Value ($_h + " *" + $_f.Name)
+                                Add-Content -Path ($SyncHash.PathOut + $_fileName) -Encoding UTF8 -Value ($_h + " *" + $_f.Name);
                             }
                         }
                     }
