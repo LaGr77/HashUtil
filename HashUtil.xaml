@@ -52,6 +52,6 @@
                 <RadioButton x:Name="rbRussian" Content="Russian" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" GroupName="rbgLanguage"/>
             </Grid>
         </GroupBox>
-        <Label x:Name="lbInfo" Content="Waiting ..." HorizontalAlignment="Left" Margin="207,449,0,0" VerticalAlignment="Top" Height="26" Width="320"/>
+        <Label x:Name="lbInfo" Content="Čekám ..." HorizontalAlignment="Left" Margin="207,449,0,0" VerticalAlignment="Top" Height="26" Width="320"/>
     </Grid>
 </Window>
