@@ -293,89 +293,75 @@ changeInputComponents -para 1;
 #>
 }
 
-function changeLanguageM {
+
+function changeLanguage {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [int]
-        $id
+        [string]
+        $lang
     )
 
-    switch ($id) {
-        1 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) {return "Upozorn$([char]0x011B)n$([char]0x00ED)";}
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
+    switch ($lang) {
+        "cze" { 
+            $SyncHash.Lang["001"] = "Upozorn$([char]0x011B)n$([char]0x00ED)";
+            $SyncHash.Lang["002"] = "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k vstupn$([char]0x00ED)mu souboru !!!";
+            $SyncHash.Lang["003"] = "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty ke vstupn$([char]0x00ED)m soubor$([char]0x016F)m !!!";
+            $SyncHash.Lang["004"] = "Chyba z$([char]0x00E1)pisu do v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ky !!!";
+            $SyncHash.Lang["005"] = "Nen$([char]0x00ED) zad$([char]0x00E1)n kontroln$([char]0x00ED) HASH !!!";
+            $SyncHash.Lang["006"] = "$([char]0x010C)ek$([char]0x00E1)m";
+            $SyncHash.Lang["007"] = "Pracuji";
+            $SyncHash.Lang["008"] = "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";
+            $SyncHash.Lang["009"] = "St$([char]0x00E1)le pracuji !!!";
+            $SyncHash.Lang["010"] = "OK"
+            $SyncHash.Lang["011"] = "Chyba";
         }
-        2 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
+        "eng" { 
+            $SyncHash.Lang["001"] = "Warning";
+            $SyncHash.Lang["002"] = "Input path error !!!";
+            $SyncHash.Lang["003"] = "Input path error !!!";
+            $SyncHash.Lang["004"] = "Write permission to output folder error !!!";
+            $SyncHash.Lang["005"] = "Control hash missing !!!";
+            $SyncHash.Lang["006"] = "Waiting";
+            $SyncHash.Lang["007"] = "Working";
+            $SyncHash.Lang["008"] = "The function is not programmed !!!";
+            $SyncHash.Lang["009"] = "Still working !!!";
+            $SyncHash.Lang["010"] = "OK"
+            $SyncHash.Lang["011"] = "FAIL";
         }
-        3 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty ke slo$([char]0x017E)ce se soubory !!!"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
+        "rus" {
+            $SyncHash.Lang["001"] =     "Upozorn$([char]0x011B)n$([char]0x00ED)";
+            $SyncHash.Lang["002"] =     "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!";
+            $SyncHash.Lang["003"] =     "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty ke slo$([char]0x017E)ce se soubory !!!";
+            $SyncHash.Lang["004"] =     "Chyba z$([char]0x00E1)pisu do v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ky !!!";
+            $SyncHash.Lang["005"] =     "Nen$([char]0x00ED) zad$([char]0x00E1)n kontroln$([char]0x00ED) HASH !!!";
+            $SyncHash.Lang["006"] =     "$([char]0x010C)ek$([char]0x00E1)m";
+            $SyncHash.Lang["007"] =     "Pracuji";
+            $SyncHash.Lang["008"] =     "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";
+            $SyncHash.Lang["009"] =     "St$([char]0x00E1)le pracuji !!!";
+            $SyncHash.Lang["010"] =     "OK"
+            $SyncHash.Lang["011"] =     "Chyba";
         }
-        4 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Chyba z$([char]0x00E1)pisu do v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ky !!!"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        5 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Nen$([char]0x00ED) zad$([char]0x00E1)n kontroln$([char]0x00ED) HASH !!!"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        6 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Čekám"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return "Waiting"; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        7 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Pracuji"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return "Working"; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        8 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        9 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "St$([char]0x00E1)le pracuji !!!"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return ""; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        10 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "OK"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return "OK"; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        11 {
-            if ($SyncHash.GuiElements.rbCzech.IsChecked -eq $true) { return "Chyba"; }
-            if ($SyncHash.GuiElements.rbEnglish.IsChecked -eq $true) { return "FAIL"; }
-            if ($SyncHash.GuiElements.rbRussian.IsChecked -eq $true) { return ""; }
-        }
-        
-        
-        Default {return "LANGUAGE ERROR !!!"}
+        Default {}
     }
 
 
+    
+
 <#
 .SYNOPSIS
-Change Language for message
+Change language
 
 .DESCRIPTION
-Change Language for message
+Change language
 
 .EXAMPLE
-changeLanguageM -id 1;
+changeLanguageM -lang EN;
 
 .NOTES
-#>
+#>    
 }
+
 
 function changeLanguageGUI {
 
@@ -432,6 +418,20 @@ $SyncHash.Algo.Add("SHA384", $false);
 $SyncHash.Algo.Add("SHA256", $false);
 $SyncHash.Algo.Add("SHA1", $false);
 $SyncHash.Algo.Add("MD5", $false);
+$SyncHash.Lang = @{};
+$SyncHash.Lang.Add("001", "");
+$SyncHash.Lang.Add("002", "");
+$SyncHash.Lang.Add("003", "");
+$SyncHash.Lang.Add("004", "");
+$SyncHash.Lang.Add("005", "");
+$SyncHash.Lang.Add("006", "");
+$SyncHash.Lang.Add("007", "");
+$SyncHash.Lang.Add("008", "");
+$SyncHash.Lang.Add("009", "");
+$SyncHash.Lang.Add("010", "");
+$SyncHash.Lang.Add("011", "");
+
+changeLanguage -lang "cze";
 
 ##Runspace
 $Runspace = [Runspacefactory]::CreateRunspace();
@@ -486,12 +486,12 @@ $SyncHash.GuiElements.btnGo.add_click({
         -or ($SyncHash.GuiElements.rbControlFromFile.IsChecked -eq $true) `
         -or ($SyncHash.GuiElements.rbCreateHashSum.IsChecked -eq $true)) {
         if ((TestPathIn -itIsFile $true) -eq $false) {
-            Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 2);
+            Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["002"]);
             $canGo = $false;
         }
     } elseif ($SyncHash.GuiElements.rbCreateHashSumMore.IsChecked -eq $true) {
         if ((TestPathIn -itIsFile $false) -eq $false) {
-            Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 3);
+            Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["003"]);
             $canGo = $false;
         } 
     } else { $canGo = $false;}
@@ -513,7 +513,7 @@ $SyncHash.GuiElements.btnGo.add_click({
             Remove-Item ($SyncHash.PathOut + "txt.txt");
         }
         Catch {
-            Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 4);
+            Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["004"]);
             ## Todo  Output path
         }
 
@@ -545,7 +545,7 @@ $SyncHash.GuiElements.btnGo.add_click({
         ##Test tbHash
         if ($SyncHash.GuiElements.rbHashControl.IsChecked -eq $true) {
             if (([string]::IsNullOrEmpty($SyncHash.GuiElements.tbHash.Text.Trim())) -eq $true) {
-                Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 5);
+                Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["005"]);
                 $canGo = $false;            
             }
         } 
@@ -557,7 +557,7 @@ $SyncHash.GuiElements.btnGo.add_click({
             $SyncHash.Error = $Error;
                 
             $SyncHash.Window.Dispatcher.Invoke([Action]{
-                $SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ";
+                $SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ";
                 
                 ##Disable componets
                 foreach ($Key in $SyncHash.GuiElements.Keys) {
@@ -578,14 +578,13 @@ $SyncHash.GuiElements.btnGo.add_click({
                     foreach ($_a in $SyncHash.Algo.Keys) { if ($SyncHash.Algo[$_a] -eq $true) {$_max += 1;}}
                     $SyncHash.Window.Dispatcher.Invoke([Action]{
                         $SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Data=$SyncHash.PathIn.Trim(); Result=$null});
-                        $SyncHash.GuiElements.lbInfo.Content=((changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")");
+                        $SyncHash.GuiElements.lbInfo.Content=(($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")");
                     });
-## ERROR nenvezme funkci z jiné instance PS, předělat na SyncHash
                     foreach ($_a in ($SyncHash.Algo.Keys | Sort-Object Keys)) {
                         if ($SyncHash.Algo[$_a] -eq $true) {
                             $_pos += 1;
                             $SyncHash.Window.Dispatcher.Invoke([Action]{
-                                $SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")";
+                                $SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")";
                             });
 
                             $_h=((Get-FileHash -Path $SyncHash.PathIn.Trim() -Algorithm $_a).Hash).ToLower();
@@ -602,20 +601,20 @@ $SyncHash.GuiElements.btnGo.add_click({
 
                     $SyncHash.Window.Dispatcher.Invoke([Action]{
                         $SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Result=$null; Data=$SyncHash.PathIn.Trim()});
-                        $SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")";
+                        $SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")";
                     });
 
                     foreach ($_a in $SyncHash.Algo.Keys | Sort-Object Keys) {
                         if ($SyncHash.Algo[$_a] -eq $true) {
                             $_pos += 1;
-                            $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + "  ... ("+$_pos+"/"+$_max+")";});
+                            $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + "  ... ("+$_pos+"/"+$_max+")";});
 
                             $_h=((Get-FileHash -Path $SyncHash.PathIn.Trim() -Algorithm $_a).Hash).ToLower();
 
                             if ($_h -ceq $SyncHash.OriginalHash.ToLower()) {
-                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Result=(changeLanguageM -id 10); Data=$_h});});     
+                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Result=($SyncHash.Lang["010"]); Data=$_h});});     
                             } else {
-                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Result=(changeLanguageM -id 10); Data=$_h});});
+                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name=$_a; Result=($SyncHash.Lang["011"]); Data=$_h});});
                             }
                         }
                     }
@@ -634,14 +633,14 @@ $SyncHash.GuiElements.btnGo.add_click({
 
                     $SyncHash.Window.Dispatcher.Invoke([Action]{
                         $SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Data=$_file.FullName; Result=$null});
-                        $SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")";
+                        $SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")";
                     });
 
                     foreach ($_a in ($SyncHash.Algo.Keys | Sort-Object Keys)) {
                         if ($SyncHash.Algo[$_a] -eq $true) {
                             $_pos += 1;
 
-                            $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")";});
+                            $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")";});
 
                             $_h=((Get-FileHash -Path $_file.FullName -Algorithm $_a).Hash).ToLower();
                                 
@@ -664,7 +663,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                     foreach ($_a in $SyncHash.Algo.Keys) { if ($SyncHash.Algo[$_a] -eq $true) {$_max += 1;}}
                     $_max = $_max * $_files.Length;
 
-                    $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")";});
+                    $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")";});
 
                     foreach ($_f in $_files) {
                         $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.dgData.AddChild([pscustomobject]@{Name="File"; Result=$null; Data=$_f.FullName});});
@@ -674,7 +673,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                                 $_pos += 1;
                                 $_fileName = ($_a + "SUM").ToUpper();
 
-                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 7) + " ... ("+$_pos+"/"+$_max+")";});
+                                $SyncHash.Window.Dispatcher.Invoke([Action]{$SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["007"]) + " ... ("+$_pos+"/"+$_max+")";});
                                 
                                 $_h=((Get-FileHash -Path $_f.FullName -Algorithm $_a).Hash).ToLower();
 
@@ -697,7 +696,7 @@ $SyncHash.GuiElements.btnGo.add_click({
                     $SyncHash.GuiElements[$Key].IsEnabled = $SyncHash.GuiElementsEnable[$Key];
                     $SyncHash.GuiElementsEnable[$Key] = $true;
                 }
-                $SyncHash.GuiElements.lbInfo.Content=(changeLanguageM -id 6) + " ... ";
+                $SyncHash.GuiElements.lbInfo.Content=($SyncHash.Lang["006"]) + " ... ";
             });
 
         }, $true);
@@ -707,20 +706,20 @@ $SyncHash.GuiElements.btnGo.add_click({
     } else { Write-Host "CAN'T GO"; }
     
 })
-$SyncHash.GuiElements.btnClear.add_click( { Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 8); })
-$SyncHash.GuiElements.btnExport.add_click( { Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 8); })
-$SyncHash.GuiElements.btnExit.add_click( { Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 8); })
+$SyncHash.GuiElements.btnClear.add_click( { Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["008"]); })
+$SyncHash.GuiElements.btnExport.add_click( { Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["008"]); })
+$SyncHash.GuiElements.btnExit.add_click( { Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["008"]); })
 
 $SyncHash.GuiElements.btnAll.add_click( { CheckBoxAlgoritm -status $true; })
 $SyncHash.GuiElements.btnNothing.add_click( { CheckBoxAlgoritm -status $false; })
 
-$SyncHash.GuiElements.rbCzech.add_click( { Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 8); })
-$SyncHash.GuiElements.rbEnglish.add_click( { Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 8); })
-$SyncHash.GuiElements.rbRussian.add_click( { Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 8); })
+$SyncHash.GuiElements.rbCzech.add_click({changeLanguage -lang "cze";})
+$SyncHash.GuiElements.rbEnglish.add_click({changeLanguage -lang "eng";})
+$SyncHash.GuiElements.rbRussian.add_click({changeLanguage -lang "rus";})
 
 $SyncHash.Window.add_closing( { ## TODO cancel
     if ($Global:Session -ne $null -and $Global:Handle.IsCompleted -eq $false) {
-        Message -title (changeLanguageM -id 1) -body (changeLanguageM -id 9);
+        Message -title ($SyncHash.Lang["001"]) -body ($SyncHash.Lang["009"]);
         $_.Cancel = $true;
         Write-Host $_;
     }
@@ -735,8 +734,8 @@ $SyncHash.Window.ShowDialog() | Out-Null;
 # SIG # Begin signature block
 # MIIGiwYJKoZIhvcNAQcCoIIGfDCCBngCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUu3c1uRXRg9fVHxieKu0er6sh
-# puKgggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUoFtHZ4fS5XyTM4fhQP/LCTbh
+# qSGgggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
 # AQUFADBwMRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxGDAWBgoJkiaJk/IsZAEZFghk
 # ZHBvcnViYTEXMBUGA1UEAwwOZGRwb3J1YmEubG9jYWwxJDAiBgkqhkiG9w0BCQEW
 # FWxncnVsaWNoQGRzcG9ydWJhLmNvbTAeFw0yMDA2MTcwODEwMzNaFw0zMDA2MTcw
@@ -761,11 +760,11 @@ $SyncHash.Window.ShowDialog() | Out-Null;
 # DmRkcG9ydWJhLmxvY2FsMSQwIgYJKoZIhvcNAQkBFhVsZ3J1bGljaEBkc3BvcnVi
 # YS5jb20CEFYhh52Hu7yaRlIKQKl9wf8wCQYFKw4DAhoFAKB4MBgGCisGAQQBgjcC
 # AQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYB
-# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFFNAf2JLkSxl
-# OokPWRC9qCqzWHbbMA0GCSqGSIb3DQEBAQUABIIBALGm874Xj26grAHgoNxTLkCB
-# zhWvzy4RRLJEugdQCkxuK7okNHfw3b+r/1Vv6IsXVRMjTaHEG28N/im1rFZoPDPB
-# G/7AYPC47Lt8KkzEb6a99FNjHo4kOhNSIRG5S8t4FN1NqZiAYxd1/6h+5Qs+jOy0
-# cVZazbg1Lku0BcO7+bpsLvwlGVlaK0rPPoTJvDfI+hTnoQPF5RxC8sCmGKfvdlbM
-# YcLK5qOn4Wr2ONkj7Ws3FA2MgG6IKu30469aW+R1QUr5h42bjLOPsR4yDhsCdK00
-# mHSwcJT8PpWnTX5wmlviwTLQjFAFxpyjt4RIZqcj+d1rBs3ebfQzx73uls44Rj0=
+# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFFQ9dmpedn5P
+# i/XROZAjY2zo3HGIMA0GCSqGSIb3DQEBAQUABIIBAJDfDQWNhS6Qnov4P+oXtPh7
+# WLr8UJW9IlwdRq4GtVqKFmjMqTztmrl2rWc4OBrHR/Y14LIJzhgt/RR7q57J1NkJ
+# lkGQus1gl6zU9SzRqPJKCxv0IHAotuP06HzNjXKpm1nE9NeXUxs3riVXW0GAa89Z
+# 1+0B9FSWUwq/hOwYHu1lEAX7/RhXuy4oUKA8KXKbFxCxhm6XVQnz8o5r8DIxtkh6
+# qZFHH4x+Fa5SNTaomFujb3DWYfHiIYZ3aNjpPv1qIk9DdQn9KAHZwcYKF9vPv5gp
+# yadr6kl8QAB3EzPqYcHzC0CE0GL3h2IraLEXAXYny50bwXhri98zfuHFB+n7yJ0=
 # SIG # End signature block

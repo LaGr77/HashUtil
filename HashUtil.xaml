@@ -34,7 +34,7 @@
         <Button x:Name="btnIn" Content="..." HorizontalAlignment="Left" Margin="809,13,0,0" VerticalAlignment="Top" Width="37" Height="23" Background="LightGreen"/>
         <Label x:Name="lbHash" Content="HASH" HorizontalAlignment="Left" Margin="207,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.606,0.033" IsEnabled="False"/>
         <TextBox x:Name="tbHash"  HorizontalAlignment="Left" Height="23" Margin="258,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="588" IsEnabled="False" Background="DarkGray"/>
-        <DataGrid x:Name="dgData" HorizontalAlignment="Left" Height="321" Margin="207,72,0,0" VerticalAlignment="Top" Width="639" SelectionMode="Single" IsReadOnly="True">
+        <DataGrid x:Name="dgData" HorizontalAlignment="Left" Height="371" Margin="207,72,0,0" VerticalAlignment="Top" Width="639" SelectionMode="Single" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Název" Width="90" MaxWidth="90" MinWidth="90"/>
                 <DataGridTextColumn Binding="{Binding Result}" Header="Výsledek" Width="90" MaxWidth="90" MinWidth="90"/>
