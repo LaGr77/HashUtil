@@ -315,6 +315,21 @@ function changeLanguage {
             $SyncHash.Lang["009"] = "St$([char]0x00E1)le pracuji !!!";
             $SyncHash.Lang["010"] = "OK"
             $SyncHash.Lang["011"] = "Chyba";
+            $SyncHash.Lang["012"] = "Vytvo$([char]0x0159)en$([char]0x00ED) HASHe"; 
+            $SyncHash.Lang["013"] = "Kontrola HASHe"; 
+            $SyncHash.Lang["014"] = "Kontrola ze souboru"; 
+            $SyncHash.Lang["015"] = "Vytvo$([char]0x0159)en$([char]0x00ED) souboru (1)"; 
+            $SyncHash.Lang["016"] = "Vytvo$([char]0x0159)en$([char]0x00ED) souboru (1+)";
+            $SyncHash.Lang["017"] = "$([char]0x010C)innost"; 
+            $SyncHash.Lang["018"] = "Algoritmus";
+            $SyncHash.Lang["019"] = "Jazyk";
+            $SyncHash.Lang["020"] = "V$([char]0x0161)e";
+            $SyncHash.Lang["021"] = "Nic";
+            $SyncHash.Lang["022"] = "Vstup";
+            $SyncHash.Lang["023"] = "Hash";
+            $SyncHash.Lang["024"] = "N$([char]0x00E1)zev";
+            $SyncHash.Lang["025"] = "V$([char]0x00FD)sledek";
+            $SyncHash.Lang["026"] = "Data";
         }
         "eng" { 
             $SyncHash.Lang["001"] = "Warning";
@@ -328,25 +343,70 @@ function changeLanguage {
             $SyncHash.Lang["009"] = "Still working !!!";
             $SyncHash.Lang["010"] = "OK"
             $SyncHash.Lang["011"] = "FAIL";
+            $SyncHash.Lang["012"] = "Create hash"; 
+            $SyncHash.Lang["013"] = "Check hash"; 
+            $SyncHash.Lang["014"] = "Check from file"; 
+            $SyncHash.Lang["015"] = "Create file (1)";
+            $SyncHash.Lang["016"] = "Create file (1+)";
+            $SyncHash.Lang["017"] = "Activity"; 
+            $SyncHash.Lang["018"] = "Algorithm";
+            $SyncHash.Lang["019"] = "Language";
+            $SyncHash.Lang["020"] = "All";
+            $SyncHash.Lang["021"] = "Nothing";
+            $SyncHash.Lang["022"] = "Input";
+            $SyncHash.Lang["023"] = "Hash";
+            $SyncHash.Lang["024"] = "Title";
+            $SyncHash.Lang["025"] = "Result";
+            $SyncHash.Lang["026"] = "Data";
         }
         "rus" {
-            $SyncHash.Lang["001"] =     "Upozorn$([char]0x011B)n$([char]0x00ED)";
-            $SyncHash.Lang["002"] =     "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty k souboru !!!";
-            $SyncHash.Lang["003"] =     "Chyba zad$([char]0x00E1)n$([char]0x00ED) cesty ke slo$([char]0x017E)ce se soubory !!!";
-            $SyncHash.Lang["004"] =     "Chyba z$([char]0x00E1)pisu do v$([char]0x00FD)stupn$([char]0x00ED) slo$([char]0x017E)ky !!!";
-            $SyncHash.Lang["005"] =     "Nen$([char]0x00ED) zad$([char]0x00E1)n kontroln$([char]0x00ED) HASH !!!";
-            $SyncHash.Lang["006"] =     "$([char]0x010C)ek$([char]0x00E1)m";
+            $SyncHash.Lang["001"] =     "Upozornění";
+            $SyncHash.Lang["002"] =     "Chyba zadání cesty k souboru !!!";
+            $SyncHash.Lang["003"] =     "Chyba zadání cesty ke složce se soubory !!!";
+            $SyncHash.Lang["004"] =     "Chyba zápisu do výstupní složky !!!";
+            $SyncHash.Lang["005"] =     "Není zadán kontrolní HASH !!!";
+            $SyncHash.Lang["006"] =     "Čekám";
             $SyncHash.Lang["007"] =     "Pracuji";
-            $SyncHash.Lang["008"] =     "Funkce nen$([char]0x00ED) naprogramov$([char]0x00E1)na !!!";
-            $SyncHash.Lang["009"] =     "St$([char]0x00E1)le pracuji !!!";
+            $SyncHash.Lang["008"] =     "Funkce není naprogramována !!!";
+            $SyncHash.Lang["009"] =     "Stále pracuji !!!";
             $SyncHash.Lang["010"] =     "OK"
             $SyncHash.Lang["011"] =     "Chyba";
+            $SyncHash.Lang["012"] =     "Vytvoření HASHe"; 
+            $SyncHash.Lang["013"] =     "Kontrola HASHe"; 
+            $SyncHash.Lang["014"] =     "Kontrola ze souboru"; 
+            $SyncHash.Lang["015"] =     "Vytvoření souboru (1)"; 
+            $SyncHash.Lang["016"] =     "Vytvoření souboru (1+)";
+            $SyncHash.Lang["017"] =     "Činnost"; 
+            $SyncHash.Lang["018"] =     "Algoritmus";
+            $SyncHash.Lang["019"] =     "Jazyk";
+            $SyncHash.Lang["020"] =     "Vše";
+            $SyncHash.Lang["021"] =     "Nic";
+            $SyncHash.Lang["022"] =     "Vstup";
+            $SyncHash.Lang["023"] =     "Hash";
+            $SyncHash.Lang["024"] =     "Název";
+            $SyncHash.Lang["025"] =     "Výsledek";
+            $SyncHash.Lang["026"] =     "Data";
         }
         Default {}
     }
-
-
+    $SyncHash.GuiElements.lbInfo.Content = $SyncHash.Lang["006"] + " ...";
+    $SyncHash.GuiElements.rbCreateHash.Content = $SyncHash.Lang["012"];
+    $SyncHash.GuiElements.rbHashControl.Content = $SyncHash.Lang["013"];
+    $SyncHash.GuiElements.rbControlFromFile.Content = $SyncHash.Lang["014"];
+    $SyncHash.GuiElements.rbCreateHashSum.Content = $SyncHash.Lang["015"];
+    $SyncHash.GuiElements.rbCreateHashSumMore.Content = $SyncHash.Lang["016"];
+    $SyncHash.GuiElements.gbOperation.Header = $SyncHash.Lang["017"];
+    $SyncHash.GuiElements.gbAlgorithm.Header = $SyncHash.Lang["018"];
+    $SyncHash.GuiElements.gbLanguage.Header = $SyncHash.Lang["019"];
+    $SyncHash.GuiElements.btnAll.Content= $SyncHash.Lang["020"];
+    $SyncHash.GuiElements.btnNothing.Content= $SyncHash.Lang["021"];
+    $SyncHash.GuiElements.lbIn.Content= $SyncHash.Lang["022"];
+    $SyncHash.GuiElements.lbHash.Content= $SyncHash.Lang["023"];
+    $SyncHash.GuiElements.dgData.Columns[0].Header = $SyncHash.Lang["024"];
+    $SyncHash.GuiElements.dgData.Columns[1].Header = $SyncHash.Lang["025"];
+    $SyncHash.GuiElements.dgData.Columns[2].Header = $SyncHash.Lang["026"];
     
+
 
 <#
 .SYNOPSIS
@@ -430,6 +490,21 @@ $SyncHash.Lang.Add("008", "");
 $SyncHash.Lang.Add("009", "");
 $SyncHash.Lang.Add("010", "");
 $SyncHash.Lang.Add("011", "");
+$SyncHash.Lang.Add("012", "");
+$SyncHash.Lang.Add("013", "");
+$SyncHash.Lang.Add("014", "");
+$SyncHash.Lang.Add("015", "");
+$SyncHash.Lang.Add("016", "");
+$SyncHash.Lang.Add("017", "");
+$SyncHash.Lang.Add("018", "");
+$SyncHash.Lang.Add("019", "");
+$SyncHash.Lang.Add("020", "");
+$SyncHash.Lang.Add("021", "");
+$SyncHash.Lang.Add("022", "");
+$SyncHash.Lang.Add("023", "");
+$SyncHash.Lang.Add("024", "");
+$SyncHash.Lang.Add("025", "");
+$SyncHash.Lang.Add("026", "");
 
 changeLanguage -lang "cze";
 
@@ -734,8 +809,8 @@ $SyncHash.Window.ShowDialog() | Out-Null;
 # SIG # Begin signature block
 # MIIGiwYJKoZIhvcNAQcCoIIGfDCCBngCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUoFtHZ4fS5XyTM4fhQP/LCTbh
-# qSGgggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUHzjW1+Ps/vYrTZvEpR+3N9TN
+# f+KgggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
 # AQUFADBwMRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxGDAWBgoJkiaJk/IsZAEZFghk
 # ZHBvcnViYTEXMBUGA1UEAwwOZGRwb3J1YmEubG9jYWwxJDAiBgkqhkiG9w0BCQEW
 # FWxncnVsaWNoQGRzcG9ydWJhLmNvbTAeFw0yMDA2MTcwODEwMzNaFw0zMDA2MTcw
@@ -760,11 +835,11 @@ $SyncHash.Window.ShowDialog() | Out-Null;
 # DmRkcG9ydWJhLmxvY2FsMSQwIgYJKoZIhvcNAQkBFhVsZ3J1bGljaEBkc3BvcnVi
 # YS5jb20CEFYhh52Hu7yaRlIKQKl9wf8wCQYFKw4DAhoFAKB4MBgGCisGAQQBgjcC
 # AQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYB
-# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFFQ9dmpedn5P
-# i/XROZAjY2zo3HGIMA0GCSqGSIb3DQEBAQUABIIBAJDfDQWNhS6Qnov4P+oXtPh7
-# WLr8UJW9IlwdRq4GtVqKFmjMqTztmrl2rWc4OBrHR/Y14LIJzhgt/RR7q57J1NkJ
-# lkGQus1gl6zU9SzRqPJKCxv0IHAotuP06HzNjXKpm1nE9NeXUxs3riVXW0GAa89Z
-# 1+0B9FSWUwq/hOwYHu1lEAX7/RhXuy4oUKA8KXKbFxCxhm6XVQnz8o5r8DIxtkh6
-# qZFHH4x+Fa5SNTaomFujb3DWYfHiIYZ3aNjpPv1qIk9DdQn9KAHZwcYKF9vPv5gp
-# yadr6kl8QAB3EzPqYcHzC0CE0GL3h2IraLEXAXYny50bwXhri98zfuHFB+n7yJ0=
+# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFKunS5zSxuFy
+# EbEpethSMApPp9lSMA0GCSqGSIb3DQEBAQUABIIBALoPNgsID0lvcDcDkFOL+/sE
+# RLMeMQhiB8mxXDha3p8Ln5puhQ/Nyvpiddp2ko+Vvd2W7eWWcv8j3pptiuPqqquu
+# 2OgGfo1aHdsqIpUnsqJ6Xcyr5tPIRk/3eVBpLmT4n6j6LJxh5oDZJq3sLLaj85E+
+# eWo3hp2LDWt+ByFfnsboKqUsFMWMEY9Hy/IYrR8ZXoM0yNXIz9CiVeULL7mxRoo5
+# iILrICQfhAU6JDnnL12IGo7Tmsu3G0TwC6p84vVicBquu1+gaNLqz7r7/Aya4NMR
+# iqMN1DuEAVQ6Tf2WGdaw3Fp2Brz7Zh331BBFWctkOkAHc0R/pFkhIEhaAFJ1N/c=
 # SIG # End signature block

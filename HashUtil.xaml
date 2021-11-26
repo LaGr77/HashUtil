@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Kontrolní součet" Height="514.361" Width="868.356" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,4,0">
-        <GroupBox x:Name="gbOperation" Header="Operace" HorizontalAlignment="Left" Height="140" Margin="11,10,0,0" VerticalAlignment="Top" Width="191">
+        <GroupBox x:Name="gbOperation" Header="Činnost" HorizontalAlignment="Left" Height="140" Margin="11,10,0,0" VerticalAlignment="Top" Width="191">
             <Grid HorizontalAlignment="Left" Height="115" Margin="10,0,-2,0" VerticalAlignment="Top" Width="171">
                 <RadioButton x:Name="rbCreateHash" Content="Vytvoření HASHe" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" GroupName="rbgOperation" IsChecked="True"/>
                 <RadioButton x:Name="rbHashControl"  Content="Kontrola HASHe" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" GroupName="rbgOperation" />
