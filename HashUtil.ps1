@@ -12,7 +12,7 @@
 .NOTES
     Author: Ing.Ladislav Grulich
     Create: 18.05.2021
-    Edited: 12.11.2021
+    Edited: 02.12.2021
 #>
 
 function CheckBoxAlgoritm {
@@ -330,6 +330,10 @@ function changeLanguage {
             $SyncHash.Lang["024"] = "N$([char]0x00E1)zev";
             $SyncHash.Lang["025"] = "V$([char]0x00FD)sledek";
             $SyncHash.Lang["026"] = "Data";
+            $SyncHash.Lang["027"] = "Prove$([char]0x010F)";
+            $SyncHash.Lang["028"] = "Vy$([char]0x010D)isti";
+            $SyncHash.Lang["029"] = "Export";
+            $SyncHash.Lang["030"] = "Konec";
         }
         "eng" { 
             $SyncHash.Lang["001"] = "Warning";
@@ -358,6 +362,10 @@ function changeLanguage {
             $SyncHash.Lang["024"] = "Title";
             $SyncHash.Lang["025"] = "Result";
             $SyncHash.Lang["026"] = "Data";
+            $SyncHash.Lang["027"] = "Do";
+            $SyncHash.Lang["028"] = "Clear";
+            $SyncHash.Lang["029"] = "Export";
+            $SyncHash.Lang["030"] = "Quit";
         }
         "rus" {
             $SyncHash.Lang["001"] =     "Upozornění";
@@ -386,6 +394,10 @@ function changeLanguage {
             $SyncHash.Lang["024"] =     "Název";
             $SyncHash.Lang["025"] =     "Výsledek";
             $SyncHash.Lang["026"] =     "Data";
+            $SyncHash.Lang["027"] =     "Proveď";
+            $SyncHash.Lang["028"] =     "Vyčisti";
+            $SyncHash.Lang["029"] =     "Export";
+            $SyncHash.Lang["030"] =     "Konec";
         }
         Default {}
     }
@@ -405,10 +417,12 @@ function changeLanguage {
     $SyncHash.GuiElements.dgData.Columns[0].Header = $SyncHash.Lang["024"];
     $SyncHash.GuiElements.dgData.Columns[1].Header = $SyncHash.Lang["025"];
     $SyncHash.GuiElements.dgData.Columns[2].Header = $SyncHash.Lang["026"];
-    
+    $SyncHash.GuiElements.btnGo.Content= $SyncHash.Lang["027"];
+    $SyncHash.GuiElements.btnClear.Content= $SyncHash.Lang["028"];
+    $SyncHash.GuiElements.btnExport.Content= $SyncHash.Lang["029"];
+    $SyncHash.GuiElements.btnExit.Content= $SyncHash.Lang["030"];
 
-
-<#
+    <#
 .SYNOPSIS
 Change language
 
@@ -438,7 +452,6 @@ changeLanguageGUI;
 .NOTES
 #>
 }
-
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
 
 ## Gui
@@ -505,6 +518,10 @@ $SyncHash.Lang.Add("023", "");
 $SyncHash.Lang.Add("024", "");
 $SyncHash.Lang.Add("025", "");
 $SyncHash.Lang.Add("026", "");
+$SyncHash.Lang.Add("027", "");
+$SyncHash.Lang.Add("028", "");
+$SyncHash.Lang.Add("029", "");
+$SyncHash.Lang.Add("030", "");
 
 changeLanguage -lang "cze";
 
@@ -809,8 +826,8 @@ $SyncHash.Window.ShowDialog() | Out-Null;
 # SIG # Begin signature block
 # MIIGiwYJKoZIhvcNAQcCoIIGfDCCBngCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUHzjW1+Ps/vYrTZvEpR+3N9TN
-# f+KgggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUF/Fh3xBL/+WR55c2JIhKbS96
+# d8igggPPMIIDyzCCArOgAwIBAgIQViGHnYe7vJpGUgpAqX3B/zANBgkqhkiG9w0B
 # AQUFADBwMRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxGDAWBgoJkiaJk/IsZAEZFghk
 # ZHBvcnViYTEXMBUGA1UEAwwOZGRwb3J1YmEubG9jYWwxJDAiBgkqhkiG9w0BCQEW
 # FWxncnVsaWNoQGRzcG9ydWJhLmNvbTAeFw0yMDA2MTcwODEwMzNaFw0zMDA2MTcw
@@ -835,11 +852,11 @@ $SyncHash.Window.ShowDialog() | Out-Null;
 # DmRkcG9ydWJhLmxvY2FsMSQwIgYJKoZIhvcNAQkBFhVsZ3J1bGljaEBkc3BvcnVi
 # YS5jb20CEFYhh52Hu7yaRlIKQKl9wf8wCQYFKw4DAhoFAKB4MBgGCisGAQQBgjcC
 # AQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYB
-# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFKunS5zSxuFy
-# EbEpethSMApPp9lSMA0GCSqGSIb3DQEBAQUABIIBALoPNgsID0lvcDcDkFOL+/sE
-# RLMeMQhiB8mxXDha3p8Ln5puhQ/Nyvpiddp2ko+Vvd2W7eWWcv8j3pptiuPqqquu
-# 2OgGfo1aHdsqIpUnsqJ6Xcyr5tPIRk/3eVBpLmT4n6j6LJxh5oDZJq3sLLaj85E+
-# eWo3hp2LDWt+ByFfnsboKqUsFMWMEY9Hy/IYrR8ZXoM0yNXIz9CiVeULL7mxRoo5
-# iILrICQfhAU6JDnnL12IGo7Tmsu3G0TwC6p84vVicBquu1+gaNLqz7r7/Aya4NMR
-# iqMN1DuEAVQ6Tf2WGdaw3Fp2Brz7Zh331BBFWctkOkAHc0R/pFkhIEhaAFJ1N/c=
+# BAGCNwIBCzEOMAwGCisGAQQBgjcCARUwIwYJKoZIhvcNAQkEMRYEFMhAZfaTsEB8
+# ckT9Kc6gAx7ck0t9MA0GCSqGSIb3DQEBAQUABIIBAHbSCjXARpEUdFqStBDtoFk9
+# kHkI0ED+YO9ah1pTPtm2lPtMZ0mxtMiO2QUhJtRa4bvs1UWaup3WZdUKTuG2CTt5
+# j8IHOfO8gCcO1TXC6ZFWTqdTkGifYYJWxusGEw0kvXfJncGKZ0Ebj5vwZuz8dVm1
+# UKWyy8UORneC75LVWLAa8/ivrHBTCVboSOIr9HeqEcVKCtTi0mAkQ4PJ91SSTESW
+# SLTzDIkTDvsYjcovAnBkjhK9KbS8U/iyejWyPXtFfRLMVVjwHtOPaLF3+rjy7m6a
+# ZQAHVCEnh16zvHIIjWz5BWS1PAkB8YgYHLRhO8fFmeJ5fyZd32SA6J9a7mXbPs8=
 # SIG # End signature block
