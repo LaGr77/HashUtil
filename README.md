@@ -1,12 +1,14 @@
-# HASH util
+# HASH util (v. 1)
 
 ## Pro čechy
 
 Script na kontrolu a tvorbu HASHe souboru.
+Verze 1., ukončená. Migrace na java 11.
 
 ## English
 
 A script that creates and checks a HASH file.
+Version 1., finished. Migration to java 11.
 
 ## Russian 
 
